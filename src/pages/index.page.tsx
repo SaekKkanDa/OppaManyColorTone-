@@ -22,6 +22,8 @@ function LandingPage() {
   const router = useRouter();
 
   const [numberOfUsers, setNumberOfUsers] = useState(0);
+  const router = useRouter();
+  const intl = useIntl();
 
   const setUserImg = useSetRecoilState(CropImage);
   const setLocale = useSetRecoilState(Locale);
@@ -47,7 +49,8 @@ function LandingPage() {
 
   const handleShare = async () => {
     if (canWebShare) return await webShare();
-    await copyUrl(location.href);
+    const messageId = await copyUrl(location.href);
+    alert(intl.messages[messageId]);
   };
 
   const handleLocale = () => {
