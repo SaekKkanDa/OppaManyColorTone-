@@ -1,13 +1,10 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useSetRecoilState } from 'recoil';
-import { FormattedMessage } from 'react-intl';
+import { useRecoilState, useSetRecoilState } from 'recoil';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faShareFromSquare,
-  faLanguage,
-} from '@fortawesome/free-solid-svg-icons';
+import { faPalette, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { CropImage, Locale } from '@Recoil/app';
 import ColorChipSpinner from '@Components/ColorChipSpinner';
 import { useCountUp } from '@Hooks/useCountUp';
@@ -19,14 +16,12 @@ import questionBubble from 'public/images/icon/question-bubble.png';
 import * as S from './style';
 
 function LandingPage() {
-  const router = useRouter();
-
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const router = useRouter();
   const intl = useIntl();
 
   const setUserImg = useSetRecoilState(CropImage);
-  const setLocale = useSetRecoilState(Locale);
+  const [locale, setLocale] = useRecoilState(Locale);
 
   useEffect(() => {
     const getNumberOfUsers = async () => {
@@ -45,6 +40,10 @@ function LandingPage() {
 
   const onClickStartButton = () => {
     router.push(ROUTE_PATH.imageUpload);
+  };
+
+  const handleViewAllType = () => {
+    router.push(ROUTE_PATH.allTypesView);
   };
 
   const handleShare = async () => {
@@ -75,15 +74,14 @@ function LandingPage() {
 
         <S.SpinnerWrapper>
           <ColorChipSpinner />
-
-          <S.AllTypesViewLink href={ROUTE_PATH.allTypesView}>
+          <S.QuestionMark>
             <Image
               src={questionBubble}
               alt="thought bubble"
               width={48}
               height={48}
             />
-          </S.AllTypesViewLink>
+          </S.QuestionMark>
         </S.SpinnerWrapper>
 
         <S.LandingBottomDiv>
@@ -96,14 +94,17 @@ function LandingPage() {
             <FormattedMessage id="startButton" />
           </S.StartButton>
 
-          <S.IconButtonWrapper>
-            <S.IconButton onClick={handleShare}>
-              <FontAwesomeIcon icon={faShareFromSquare} size="2x" />
-            </S.IconButton>
-            <S.IconButton onClick={handleLocale}>
-              <FontAwesomeIcon icon={faLanguage} size="2x" />
-            </S.IconButton>
-          </S.IconButtonWrapper>
+          <S.MiniButtonWrapper>
+            <S.MiniButton $type="icon" onClick={handleViewAllType}>
+              <FontAwesomeIcon icon={faPalette} />
+            </S.MiniButton>
+            <S.MiniButton $type="text" onClick={handleLocale}>
+              {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[locale]}
+            </S.MiniButton>
+            <S.MiniButton $type="icon" onClick={handleShare}>
+              <FontAwesomeIcon icon={faShareNodes} />
+            </S.MiniButton>
+          </S.MiniButtonWrapper>
         </S.LandingBottomDiv>
       </S.LandingWrap>
     </>
