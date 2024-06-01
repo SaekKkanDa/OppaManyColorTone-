@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import styled from 'styled-components';
 import { Button, flexCustom } from '@Styles/theme';
 
@@ -46,7 +45,7 @@ export const SpinnerLoadingArea = styled.div`
   height: 240px;
 `;
 
-export const AllTypesViewLink = styled(Link)`
+export const QuestionMark = styled.div`
   position: absolute;
   top: calc(50% - 80px);
   left: calc(50% + 36px);
@@ -127,17 +126,24 @@ export const StartButton = styled(Button)`
   cursor: pointer;
 `;
 
-export const IconButtonWrapper = styled.div`
-  ${flexCustom('row', 'center', 'center')}
-  column-gap: 0.75rem;
+export const MiniButtonWrapper = styled.div`
+  ${flexCustom('row', 'flex-end', 'center')}
+  column-gap: 1rem;
   margin-top: 16px;
 `;
 
-export const IconButton = styled.button`
-  color: ${({ theme }) => theme.gray[700]};
-  font-size: 12px;
+export const MiniButton = styled.button<{ $type: 'icon' | 'text' }>`
+  ${flexCustom('column', 'center', 'center')}
+  padding: ${({ $type }) =>
+    $type === 'text' ? '0.5875rem 0.5rem 0.4125rem' : '0.5rem'};
+  border: 1px solid ${({ theme }) => theme.gray[500]};
+  border-radius: 1.5rem;
+  color: ${({ theme }) => theme.gray[500]};
+  font-size: 0.875rem;
 
   &:active {
-    color: ${({ theme }) => theme.gray[900]};
+    background-color: ${({ theme }) => theme.gray[200]};
+    border-color: ${({ theme }) => theme.gray[700]};
+    color: ${({ theme }) => theme.gray[700]};
   }
 `;
