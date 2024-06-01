@@ -10,6 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { CropImage, Locale } from '@Recoil/app';
 import ColorChipSpinner from '@Components/ColorChipSpinner';
+import { useCountUp } from '@Hooks/useCountUp';
 import omctDb from '@Utils/omctDb';
 import { canWebShare, webShare } from '@Utils/share';
 import ROUTE_PATH from '@Constant/routePath';
@@ -32,6 +33,9 @@ function LandingPage() {
 
     getNumberOfUsers();
   }, []);
+
+  const COUNT_UP_DURATION = 2000;
+  const count = useCountUp(numberOfUsers, COUNT_UP_DURATION);
 
   useEffect(() => {
     setUserImg('');
@@ -81,8 +85,7 @@ function LandingPage() {
 
         <S.LandingBottomDiv>
           <S.UserCount>
-            <FormattedMessage id="userCount_1" />{' '}
-            {numberOfUsers ? numberOfUsers.toLocaleString() : '1,000'}
+            <FormattedMessage id="userCount_1" /> {count.toLocaleString()}
             <FormattedMessage id="userCount_2" />
           </S.UserCount>
 
