@@ -36,7 +36,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictPropertyInitialization": false
   },
   "include": [
     "src/**/*.ts",
