@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef } from 'react';
 
 import { isNil } from '@Base/utils/check';
 
@@ -8,24 +8,24 @@ export interface UseTriggerProps {
 }
 
 export function useTrigger({ triggerFn, onTrigger }: UseTriggerProps) {
-  const [isTriggered, setIsTriggered] = useState(false);
+  const isTrigredRef = useRef(false);
 
   const reset = useCallback(() => {
-    setIsTriggered(false);
+    isTrigredRef.current = false;
   }, []);
 
   const trigger = useCallback(() => {
-    setIsTriggered(true);
+    isTrigredRef.current = true;
   }, []);
 
   useEffect(() => {
     if (isNil(triggerFn)) return;
 
-    if (triggerFn()) {
-      setIsTriggered(true);
+    if (!isTrigredRef.current && triggerFn()) {
+      isTrigredRef.current = true;
       onTrigger?.(reset);
     }
   }, [onTrigger, reset, triggerFn]);
 
-  return { isTriggered, reset, trigger };
+  return { isTriggered: isTrigredRef.current, reset, trigger };
 }

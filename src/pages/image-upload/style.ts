@@ -69,3 +69,12 @@ export const NextButton = styled(Button)`
   left: 50%;
   transform: translateX(-50%);
 `;
+
+// Modal
+export const ModalText = styled.div``;
+
+export const ModalButton = styled(Button)`
+  &&& {
+    font-size: ${({ theme }) => theme.font.size.md};
+  }
+`;
