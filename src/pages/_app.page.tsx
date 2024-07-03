@@ -10,6 +10,7 @@ import theme from '@Styles/theme';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { config } from '@fortawesome/fontawesome-svg-core';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
+import { LoadingProvider } from '@Components/Contexts/LoadingContext';
 
 config.autoAddCss = false;
 
@@ -32,9 +33,11 @@ const App = ({ Component, pageProps }: AppProps) => {
       <RecoilRoot>
         <GlobalStyle />
         <ThemeProvider theme={theme}>
-          <MobileLayout>
-            {isLoading ? <LoadingIndicator /> : <Component {...pageProps} />}
-          </MobileLayout>
+          <LoadingProvider>
+            <MobileLayout>
+              {isLoading ? <LoadingIndicator /> : <Component {...pageProps} />}
+            </MobileLayout>
+          </LoadingProvider>
         </ThemeProvider>
       </RecoilRoot>
     </>
