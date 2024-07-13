@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Hidden } from '@Base/components/Hidden';
 import useCreatePortal from '@Base/hooks/useCreatePortal';
-import { isFalse } from '@Base/utils/check';
+import { isNil } from '@Base/utils/check';
 
 export interface ModalBaseProps {
   backdropComponent?: ReactElement;
@@ -22,7 +22,7 @@ export function ModalBase({
 }: ModalBaseProps) {
   const createPortal = useCreatePortal();
 
-  if (isFalse(createPortal)) return <></>;
+  if (isNil(createPortal)) return <></>;
 
   return createPortal(
     <Hidden isHidden={!isOpen} style={hiddenStyle}>

@@ -18,7 +18,7 @@ import { useModal } from '@Base/hooks/useModal';
 
 import FaceDetection from './FaceDetection';
 import * as S from './style';
-import { isEmpty, isTrue } from '@Base/utils/check';
+import { isEmpty, isNotNil } from '@Base/utils/check';
 import { useTrigger } from '@Base/hooks/useTrigger';
 import { imageFileState, shareModalState } from './imageUpload.atom';
 import useModalRecoil from '@Hooks/useModalRecoil';
@@ -64,7 +64,7 @@ function ImageUploadPage() {
   return (
     <>
       <ModalContainer isOpen={isOpenImageUploadModal}>
-        {isOpenImageUploadModal && isTrue(imageFile) && (
+        {isOpenImageUploadModal && isNotNil(imageFile) && (
           <>
             <ThemeModal>
               <FaceDetection
