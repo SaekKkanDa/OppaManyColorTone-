@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 
-import { isTrue } from '@Base/utils/check';
+import { isNotNil } from '@Base/utils/check';
 
 export interface UseModalProps {
   defaultMessage?: string;
@@ -15,7 +15,7 @@ export function useModal({
   const [message, setMessage] = useState(defaultMessage);
 
   const open = useCallback((message?: string) => {
-    if (isTrue(message)) setMessage(message);
+    if (isNotNil(message)) setMessage(message);
 
     setIsOpen(true);
   }, []);

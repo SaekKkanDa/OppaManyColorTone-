@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDownload, faLink, faShare } from '@fortawesome/free-solid-svg-icons';
 import kakaoIcon from 'public/images/icon/kakaoIcon.png';
 
-import { isEmpty, isFalse } from '@Base/utils/check';
+import { isEmpty, isNil } from '@Base/utils/check';
 import AlertModal from '@Components/AlertModal';
 import { useModal } from '@Base/hooks/useModal';
 import ROUTE_PATH from '@Constant/routePath';
@@ -42,7 +42,7 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
     }
 
     const wrapper = resultContainerRef.current;
-    if (isFalse(wrapper)) return;
+    if (isNil(wrapper)) return;
 
     const imgName = `${colorType}-result.png`;
     captureAndDownload(wrapper, imgName);
