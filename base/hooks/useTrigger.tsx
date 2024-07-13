@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import { isFalse } from '@Base/utils/check';
+import { isNil } from '@Base/utils/check';
 
 export interface UseTriggerProps {
   triggerFn?: () => boolean;
@@ -19,7 +19,7 @@ export function useTrigger({ triggerFn, onTrigger }: UseTriggerProps) {
   }, []);
 
   useEffect(() => {
-    if (isFalse(triggerFn)) return;
+    if (isNil(triggerFn)) return;
 
     if (triggerFn()) {
       setIsTriggered(true);

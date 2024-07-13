@@ -2,7 +2,7 @@
  * checking object if is null + undefined or not
  * if object is 0, this functions consider as true
  */
-export function isFalse<T>(obj: T | undefined | null): obj is undefined | null {
+export function isNil<T>(obj: T | undefined | null): obj is undefined | null {
   if (obj === undefined || obj === null) return true;
 
   return false;
@@ -12,8 +12,8 @@ export function isFalse<T>(obj: T | undefined | null): obj is undefined | null {
  * checking object if is null + undefined or not
  * if object is 0, this functions consider as true
  */
-export function isTrue<T>(obj: T | undefined | null): obj is T {
-  return !isFalse(obj);
+export function isNotNil<T>(obj: T | undefined | null): obj is T {
+  return !isNil(obj);
 }
 
 export function isEmpty<T extends string | Array<unknown>>(obj: T) {
