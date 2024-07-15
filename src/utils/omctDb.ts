@@ -8,9 +8,12 @@ import {
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
 import OmctFirebaseApp from '@Utils/firebase';
-import { getRandomId } from '@Base/utils/dataExtension';
-import { parseError } from '@Utils/omctError';
-import omctError, { EOmctErrorNo } from '@Constant/errorKeyValue';
+import { OmctError, parseError } from '@Utils/omctError';
+import { EOmctErrorNo } from '@Constant/errorKeyValue';
+import { encryptionMd5 } from '@Utils/encryption';
+import { OmctConsole } from '@Utils/console';
+
+const console = new OmctConsole('OmctDB');
 
 class OmctDb extends OmctFirebaseApp {
   static #instance: InstanceType<typeof OmctDb>;
@@ -36,9 +39,7 @@ class OmctDb extends OmctFirebaseApp {
         return docSnap.data().numberOfUsers;
       }
 
-      throw new Error(
-        'firebase document에서 numberOfUsers를 찾을 수 없습니다.'
-      );
+      throw new OmctError(EOmctErrorNo.FIREBASE_STORAGE_OBJECT_NOT_FOUND);
     } catch (error) {
       console.error(error);
 
@@ -53,42 +54,37 @@ class OmctDb extends OmctFirebaseApp {
   }
 
   public async sendPersonalImage(file: Blob | Uint8Array | ArrayBuffer) {
-    let uniqueId = getRandomId();
-    let cnt = 0;
-    for (cnt = 0; cnt < OmctDb.MAX_RETRY_CNT; cnt++) {
-      console.log(uniqueId);
-      try {
-        await this.getPersonalImageUrl(uniqueId);
-      } catch (e: unknown) {
-        const err = parseError(e);
-        if (err.code === EOmctErrorNo.FIREBASE_STORAGE_OBJECT_NOT_FOUND) {
-          break;
-        }
+    const buffer = file instanceof Blob ? await file.arrayBuffer() : file;
+    const fileName = encryptionMd5(buffer);
+
+    try {
+      const ref = this.getStorageRef(fileName);
+      // image have already been uploaded
+      return ref;
+    } catch (e: unknown) {
+      const err = parseError(e);
+      if (err.code !== EOmctErrorNo.FIREBASE_STORAGE_OBJECT_NOT_FOUND) {
+        console.error(err);
+        throw new OmctError(EOmctErrorNo.COMMON_UNHANDLED_ERROR);
       }
-      uniqueId = getRandomId();
     }
-
-    const isFail = cnt === OmctDb.MAX_RETRY_CNT;
-
-    if (isFail)
-      throw {
-        code: EOmctErrorNo.FIREBASE_STORAGE_UNIQUE_ID_NOT_FOUND,
-        message: omctError.get(
-          EOmctErrorNo.FIREBASE_STORAGE_UNIQUE_ID_NOT_FOUND
-        ),
-      } as OmctErrorResponse;
 
     const imgRef = ref(
       this.m_storage,
-      `${this.m_personaImagePath}/${uniqueId}.png`
+      `${this.m_personaImagePath}/${fileName}.png`
     );
 
-    return uploadBytes(imgRef, file);
+    const storageRef = (await uploadBytes(imgRef, file)).ref;
+    return storageRef;
+  }
+
+  private getStorageRef(url?: string) {
+    return ref(this.m_storage, url);
   }
 
   public async getPersonalImageUrl(name: string) {
     const path = `${this.m_personaImagePath}/${name}.png`;
-    const imgRef = ref(this.m_storage, path);
+    const imgRef = this.getStorageRef(path);
     return getDownloadURL(imgRef);
   }
 }
