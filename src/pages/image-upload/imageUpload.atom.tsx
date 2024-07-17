@@ -16,3 +16,8 @@ export const shareInfoModalState = atom({
   key: `${KEY_PREFIX}_shareInfoModal`,
   default: false,
 });
+
+export const imageNameState = atom<string | undefined>({
+  key: `${KEY_PREFIX}_imageName`,
+  default: undefined,
+});

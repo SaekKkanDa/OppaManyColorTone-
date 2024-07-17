@@ -71,10 +71,52 @@ export const NextButton = styled(Button)`
 `;
 
 // Modal
-export const ModalText = styled.div``;
+export const ModalText = styled.div`
+  text-align: center;
+`;
 
 export const ModalButton = styled(Button)`
   &&& {
     font-size: ${({ theme }) => theme.font.size.md};
   }
+`;
+
+export const MenuContainer = styled.div`
+  ${flexCustom('row', 'inherit', 'space-around')}
+  padding: 10px 10px;
+`;
+
+export const MenuItemWrapper = styled.div`
+  ${flexCustom('column', 'center', 'center')}
+`;
+
+export const MenuItemButton = styled.button`
+  ${flexCustom('column', 'center', 'center')}
+  padding: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.gray[800]};
+  aspect-ratio: 1/1;
+  font-size: 48px;
+  cursor: pointer;
+
+  svg {
+    width: 100%;
+  }
+`;
+
+export const KakaoShareButton = styled.button`
+  ${flexCustom('column', 'center', 'center')}
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+`;
+
+export const MenuItemName = styled.div`
+  margin-top: 4px;
+  text-align: center;
+  font-size: 12px;
 `;
