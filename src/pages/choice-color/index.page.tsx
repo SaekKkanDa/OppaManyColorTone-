@@ -7,6 +7,40 @@ import * as S from './style';
 import { AdSense } from '@Components/AdSense';
 import useCropImg from '@Hooks/useCropImg';
 import shuffle from '@Utils/shuffle';
+import { useSearchParams } from 'next/navigation';
+import { isEmpty, isNil, isNotNil } from '@Base/utils/check';
+import omctDb from '@Utils/omctDb';
+import LoadingIndicator from '@Components/LoadingIndicator';
+import { useRecoilState } from 'recoil';
+import { CropImage } from '@Recoil/app';
+import { withLoadingRouter } from '@Components/WithLoadingRouter/withLoadingRouter';
+
+const Page = () => {
+  const searchParams = useSearchParams();
+  const imageName = searchParams.get('imageName');
+  const [isLoading, setIsLoading] = useState(
+    isNotNil(imageName) && !isEmpty(imageName)
+  );
+  const [, setCropImg] = useRecoilState(CropImage);
+
+  useEffect(() => {
+    if (isNil(imageName) || isEmpty(imageName)) return;
+
+    omctDb
+      .getPersonalImageUrl(imageName)
+      .then((data) => {
+        setCropImg(data);
+      })
+      .catch()
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [imageName, setCropImg]);
+
+  if (isLoading) return <LoadingIndicator />;
+
+  return <ChoiceColor />;
+};
 
 function ChoiceColor() {
   const [selectedTypes, setSelectedTypes] = useState<ColorType[]>([]);
@@ -21,7 +55,7 @@ function ChoiceColor() {
       return shuffle(choiceColorData[stageNum]);
     }
     return choiceColorData[stageNum];
-  }, [stageNum]);
+  }, [MAX_STAGE_NUM, stageNum]);
 
   const bonusColorTypes = useSelectBonusColorTypes(
     selectedTypes,
@@ -67,4 +101,4 @@ function ChoiceColor() {
   );
 }
 
-export default ChoiceColor;
+export default withLoadingRouter(Page);

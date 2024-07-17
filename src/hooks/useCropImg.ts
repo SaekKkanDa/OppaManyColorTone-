@@ -6,7 +6,7 @@ import curiousEmoji from 'public/images/logo/curious-emoji-3d.png';
 
 function useCropImg() {
   const cropImg = useRecoilValue(CropImage);
-  const userImg = useMemo(() => {
+  const userImg = useMemo<string>(() => {
     if (!cropImg) return curiousEmoji.src;
 
     return cropImg;
