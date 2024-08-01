@@ -38,7 +38,7 @@ function ChoiceColor() {
       const timeout = setTimeout(() => {
         setStageNum((prev) => prev + 1);
         setSelectedColor('');
-      }, 1000);
+      }, 600);
 
       return () => clearTimeout(timeout);
     }
