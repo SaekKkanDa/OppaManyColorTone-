@@ -1,20 +1,23 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import useSelectBonusColorTypes from '@Hooks/useSelectBonusColorTypes';
-import choiceColorData from '@Data/choiceColorData';
+import choiceColorData, { ChoiceColorDataType } from '@Data/choiceColorData';
 import BasicStage from './BasicStage';
 import BonusStage from './BonusStage';
 import * as S from './style';
 import { AdSense } from '@Components/AdSense';
 import useCropImg from '@Hooks/useCropImg';
+import shuffle from '@Utils/shuffle';
 
 function ChoiceColor() {
   const [selectedTypes, setSelectedTypes] = useState<ColorType[]>([]);
+  const [selectedColor, setSelectedColor] = useState('');
+  const [stageNum, setStageNum] = useState(0);
 
-  const stageNum = selectedTypes.length;
+  // const stageNum = selectedTypes.length;
   const MAX_STAGE_NUM = choiceColorData.length;
 
   const basicColorOptions = useMemo(
-    () => choiceColorData[stageNum],
+    () => shuffle(choiceColorData[stageNum]),
     [stageNum]
   );
 
@@ -25,9 +28,21 @@ function ChoiceColor() {
 
   const userImg = useCropImg();
 
-  const onBasicClick = (type: ColorType) => {
-    setSelectedTypes((prev) => [...prev, type]);
+  const onBasicClick = (selectedChip: ChoiceColorDataType) => {
+    setSelectedTypes((prev) => [...prev, selectedChip.type]);
+    setSelectedColor(selectedChip.color);
   };
+
+  useEffect(() => {
+    if (selectedColor) {
+      const timeout = setTimeout(() => {
+        setStageNum((prev) => prev + 1);
+        setSelectedColor('');
+      }, 1000);
+
+      return () => clearTimeout(timeout);
+    }
+  }, [selectedColor]);
 
   return (
     <S.Wrapper>
@@ -37,6 +52,7 @@ function ChoiceColor() {
           stageNum={stageNum}
           MAX_STAGE_NUM={MAX_STAGE_NUM}
           basicColorOptions={basicColorOptions}
+          selectedColor={selectedColor}
           onBasicClick={onBasicClick}
         />
       ) : (

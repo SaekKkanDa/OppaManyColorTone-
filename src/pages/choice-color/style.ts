@@ -8,5 +8,5 @@ export const Wrapper = styled.div`
   margin: 0 auto;
   padding: 20px;
   max-width: var(--viewport-max-width);
-  height: 100%;
+  height: 100vh;
 `;
