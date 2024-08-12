@@ -13,13 +13,15 @@ function ChoiceColor() {
   const [selectedColor, setSelectedColor] = useState('');
   const [stageNum, setStageNum] = useState(0);
 
-  // const stageNum = selectedTypes.length;
+  const selectedTypesLength = selectedTypes.length;
   const MAX_STAGE_NUM = choiceColorData.length;
 
-  const basicColorOptions = useMemo(
-    () => shuffle(choiceColorData[stageNum]),
-    [stageNum]
-  );
+  const basicColorOptions = useMemo(() => {
+    if (stageNum < MAX_STAGE_NUM) {
+      return shuffle(choiceColorData[stageNum]);
+    }
+    return choiceColorData[stageNum];
+  }, [stageNum]);
 
   const bonusColorTypes = useSelectBonusColorTypes(
     selectedTypes,
@@ -29,6 +31,8 @@ function ChoiceColor() {
   const userImg = useCropImg();
 
   const onBasicClick = (selectedChip: ChoiceColorDataType) => {
+    if (!(stageNum < MAX_STAGE_NUM)) return;
+
     setSelectedTypes((prev) => [...prev, selectedChip.type]);
     setSelectedColor(selectedChip.color);
   };
@@ -42,11 +46,11 @@ function ChoiceColor() {
 
       return () => clearTimeout(timeout);
     }
-  }, [selectedColor]);
+  }, [stageNum, selectedColor]);
 
   return (
     <S.Wrapper>
-      {stageNum < MAX_STAGE_NUM ? (
+      {selectedTypesLength < MAX_STAGE_NUM ? (
         <BasicStage
           userImg={userImg}
           stageNum={stageNum}
