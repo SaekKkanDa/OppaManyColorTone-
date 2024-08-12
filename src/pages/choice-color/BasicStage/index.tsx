@@ -5,13 +5,15 @@ import type { ChoiceColorDataType } from '@Data/choiceColorData';
 import Guidance from '../Guidance';
 
 import * as S from './style';
+import ChoiceColor from '../index.page';
 
 interface BasicStageProps {
   userImg: string;
   stageNum: number;
   MAX_STAGE_NUM: number;
   basicColorOptions: ChoiceColorDataType[];
-  onBasicClick: (type: ColorType) => void;
+  selectedColor: string;
+  onBasicClick: (selectedChip: ChoiceColorDataType) => void;
 }
 
 function BasicStage({
@@ -19,6 +21,7 @@ function BasicStage({
   stageNum,
   MAX_STAGE_NUM,
   basicColorOptions,
+  selectedColor,
   onBasicClick,
 }: BasicStageProps) {
   return (
@@ -33,11 +36,12 @@ function BasicStage({
       <Guidance />
 
       <S.ColorBox>
-        {shuffle(basicColorOptions).map((item) => (
+        {basicColorOptions.map((item) => (
           <S.Color
             key={item.id}
             color={item.color}
-            onClick={() => onBasicClick(item.type)}
+            isSelected={item.color === selectedColor}
+            onClick={() => onBasicClick(item)}
           >
             <Image src={userImg} alt="사용자 이미지" width={100} height={100} />
           </S.Color>
