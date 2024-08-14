@@ -1,14 +1,14 @@
 import Link from 'next/link';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 import emoji from 'public/images/emoji/sad-emoji-3d.png';
 import * as S from './style';
 
 const NotFound = () => {
+  const { t } = useTranslation('common');
+
   return (
     <S.FlexContainer>
-      <S.Message>
-        <FormattedMessage id="notFoundMsg" />
-      </S.Message>
+      <S.Message>{t('notFoundMsg')}</S.Message>
       <S.Emoji
         src={emoji.src}
         alt="sad emoji"
@@ -18,9 +18,7 @@ const NotFound = () => {
       />
 
       <Link href="/">
-        <S.HomeButton>
-          <FormattedMessage id="restart" />
-        </S.HomeButton>
+        <S.HomeButton>{t('restart')}</S.HomeButton>
       </Link>
     </S.FlexContainer>
   );

@@ -1,15 +1,14 @@
 import Link from 'next/link';
 import { BorderedButton } from '@Styles/theme';
 import ROUTE_PATH from '@Constant/routePath';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 
-// HJ TODO: props를 전달 받아야 할까?
 function RestartButton() {
+  const { t } = useTranslation('common');
+
   return (
     <Link href={ROUTE_PATH.landing}>
-      <BorderedButton style={{ width: '100%' }}>
-        <FormattedMessage id="restart" />
-      </BorderedButton>
+      <BorderedButton style={{ width: '100%' }}>{t('restart')}</BorderedButton>
     </Link>
   );
 }

@@ -1,4 +1,4 @@
-import Script from 'next/script';
+/* eslint-disable @next/next/no-document-import-in-page */
 import Document, {
   Html,
   Head,
@@ -7,6 +7,7 @@ import Document, {
   DocumentContext,
   DocumentInitialProps,
 } from 'next/document';
+import i18nextConfig from '../../next-i18next.config';
 import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
@@ -39,8 +40,11 @@ export default class MyDocument extends Document {
   }
 
   render() {
+    const currentLocale =
+      this.props.__NEXT_DATA__.locale ?? i18nextConfig.i18n.defaultLocale;
+
     return (
-      <Html>
+      <Html lang={currentLocale}>
         <Head>
           <meta
             name="application-name"
@@ -82,13 +86,6 @@ export default class MyDocument extends Document {
           <meta
             name="naver-site-verification"
             content="4be41e9a6714ed8ff418f6bfaa1eb7fcb635871c"
-          />
-
-          {/* Google Adsense */}
-          <Script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9551977219354865"
-            crossOrigin="anonymous"
           />
 
           {/* favicon: icons created by Freepik - Flaticon */}

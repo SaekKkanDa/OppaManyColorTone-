@@ -12,7 +12,11 @@ export interface AdSenseProps {
 
 export function AdSense(props: AdSenseProps) {
   useEffect(() => {
-    (window.adsbygoogle = window.adsbygoogle || []).push({});
+    try {
+      (window.adsbygoogle = window.adsbygoogle || []).push({});
+    } catch (e) {
+      console.error('AdSense error', e);
+    }
   }, []);
 
   return (
