@@ -1,11 +1,13 @@
 import Image from 'next/image';
 import { FormattedMessage } from 'react-intl';
-import shuffle from '@Utils/shuffle';
 import type { ChoiceColorDataType } from '@Data/choiceColorData';
 import Guidance from '../Guidance';
 
 import * as S from './style';
-import ChoiceColor from '../index.page';
+import { useRecoilState } from 'recoil';
+import { onboardingElState } from '@Pages/choice-color/choiceColor.atom';
+import { useEffect, useRef } from 'react';
+import { isNotNil } from '@Base/utils/check';
 
 interface BasicStageProps {
   userImg: string;
@@ -24,6 +26,15 @@ function BasicStage({
   selectedColor,
   onBasicClick,
 }: BasicStageProps) {
+  // HJ TODO: 더 좋은 방법이 있을 것 같음...
+  const colorBoxElRef = useRef<HTMLDivElement>(null);
+  const [, setOnboardingEl] = useRecoilState(onboardingElState);
+
+  useEffect(() => {
+    const colorBoxEl = colorBoxElRef.current;
+    if (isNotNil(colorBoxEl)) setOnboardingEl(colorBoxEl);
+  }, [setOnboardingEl]);
+
   return (
     <>
       <S.StatusBox>
@@ -35,7 +46,7 @@ function BasicStage({
 
       <Guidance />
 
-      <S.ColorBox>
+      <S.ColorBox ref={colorBoxElRef}>
         {basicColorOptions.map((item) => (
           <S.Color
             key={item.id}

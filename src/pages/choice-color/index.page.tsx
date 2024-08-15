@@ -14,6 +14,7 @@ import LoadingIndicator from '@Components/LoadingIndicator';
 import { useRecoilState } from 'recoil';
 import { CropImage } from '@Recoil/app';
 import { withLoadingRouter } from '@Components/WithLoadingRouter/withLoadingRouter';
+import { OnboardingPage } from '@Pages/choice-color/subpages/onboadring.subpage';
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -28,7 +29,7 @@ const Page = () => {
 
     omctDb
       .getPersonalImageUrl(imageName)
-      .then((data) => {
+      .then(async (data) => {
         setCropImg(data);
       })
       .catch()
@@ -97,6 +98,7 @@ function ChoiceColor() {
         <BonusStage userImg={userImg} bonusColorTypes={bonusColorTypes} />
       )}
       <AdSense data-ad-slot={'2551404503'} />
+      <OnboardingPage />
     </S.Wrapper>
   );
 }

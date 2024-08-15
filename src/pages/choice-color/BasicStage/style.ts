@@ -41,6 +41,7 @@ export const ColorBox = styled.div`
   height: 520px;
   margin-bottom: 20px;
   cursor: pointer;
+  border-radius: 8px;
 `;
 
 export const Color = styled.div<{ color?: string; isSelected: boolean }>`

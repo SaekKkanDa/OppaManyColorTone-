@@ -219,5 +219,7 @@
   "alertNotSupportedBrowser": "현재 브라우저에서는 지원하지 않는 기능입니다. 다른 브라우저에서 실행해 주세요. 🥰",
   "shareModal_1": "동의하십니까?",
   "shareModal_2": "대신 선택 요청하기?",
-  "shareModal_3": "원하는 방법으로 전송하세요"
+  "shareModal_3": "원하는 방법으로 전송하세요",
+  "onboarding1": "4개의 카드 중 얼굴과 잘 어울리는\n카드를 선택해주세요",
+  "onboarding-confirm": "확인"
 }
