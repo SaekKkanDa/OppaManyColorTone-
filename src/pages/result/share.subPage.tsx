@@ -2,21 +2,21 @@ import React from 'react';
 import Link from 'next/link';
 import { FormattedMessage } from 'react-intl';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faLink, faShare } from '@fortawesome/free-solid-svg-icons';
-import kakaoIcon from 'public/images/icon/kakaoIcon.png';
-
 import { isEmpty, isNil } from '@Base/utils/check';
 import AlertModal from '@Components/AlertModal';
 import { useModal } from '@Base/hooks/useModal';
 import ROUTE_PATH from '@Constant/routePath';
-import useKakaoShare from '@Hooks/useKakaoShare';
 import { copyUrl } from '@Utils/clipboard';
-import { canWebShare, webShare } from '@Utils/share';
-import { isChrome, isOSX } from '@Utils/userAgent';
 import RestartButton from '@Pages/result/RestartButton';
 import { captureAndDownload, checkIfKakaoAndAlert } from './share.logic';
 import * as S from './style';
+import { useShareKakao } from '@Hooks/useShareKakao';
+import { useShareWeb } from '@Hooks/useShareWeb';
+import { EOmctErrorNo } from '@Constant/errorKeyValue';
+import { IconDownload } from '@Components/Icon/IconDownload';
+import { IconCopy } from '@Components/Icon/IconCopy';
+import { IconKakao } from '@Components/Icon/IconKakao';
+import { IconShare } from '@Components/Icon/IconShare';
 
 interface MenuSubPageProps {
   resultContainerRef: React.RefObject<HTMLDivElement>;
@@ -32,7 +32,23 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
     close: closeAlertModal,
   } = useModal({ defaultMessage: '' });
 
-  const { isLoading, kakaoShare } = useKakaoShare();
+  const kakaoShare = useShareKakao({
+    onError: () => openAlertModal('alertRetry'),
+  });
+
+  const webShare = useShareWeb({
+    onError: (reason) => {
+      if (reason === EOmctErrorNo.SHARE_NOT_SUPPORT_KAKAO_BROWSER) {
+        openAlertModal('alertKakao');
+      } else if (reason === EOmctErrorNo.SHARE_NOT_SUPPORT_BROWSER) {
+        openAlertModal('alertMacOS');
+      } else if (reason === EOmctErrorNo.SHARE_NOT_SUPPORT_FUNCTION) {
+        openAlertModal('alertNotSupportedBrowser');
+      }
+      // HJ TODO: assertion 함수 구현
+    },
+  });
+
   const kakaoAlertMsg = checkIfKakaoAndAlert();
 
   const onClickCapture = async () => {
@@ -53,35 +69,9 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
       openAlertModal(kakaoAlertMsg);
       return;
     }
+
     const copyAlertMsg = await copyUrl(location.href);
     openAlertModal(copyAlertMsg);
-  };
-
-  const onClickKakaoShare = () => {
-    if (isLoading) {
-      openAlertModal('alertRetry');
-    } else {
-      kakaoShare();
-    }
-  };
-
-  const onClickShare = async () => {
-    if (kakaoAlertMsg) {
-      openAlertModal(kakaoAlertMsg);
-      return;
-    }
-
-    if (isChrome() && isOSX()) {
-      openAlertModal('alertMacOS');
-      return;
-    }
-
-    if (!canWebShare) {
-      openAlertModal('alertNotSupportedBrowser');
-      return;
-    }
-
-    await webShare();
   };
 
   return (
@@ -89,7 +79,7 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
       <S.MenuContainer>
         <S.MenuItemWrapper>
           <S.MenuItemButton onClick={onClickCapture}>
-            <FontAwesomeIcon icon={faDownload} color={'white'} />
+            <IconDownload />
           </S.MenuItemButton>
           <S.MenuItemName>
             <FormattedMessage id="saveResult" />
@@ -98,7 +88,7 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
 
         <S.MenuItemWrapper>
           <S.MenuItemButton onClick={onClickLinkCopy}>
-            <FontAwesomeIcon icon={faLink} color={'white'} />
+            <IconCopy />
           </S.MenuItemButton>
           <S.MenuItemName>
             <FormattedMessage id="copyUrl" />
@@ -106,13 +96,8 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
-          <S.KakaoShareButton onClick={onClickKakaoShare}>
-            <S.MenuItemImg
-              src={kakaoIcon}
-              alt="카카오톡 공유 버튼"
-              width={48}
-              height={48}
-            />
+          <S.KakaoShareButton onClick={kakaoShare}>
+            <IconKakao width={48} height={48} />
           </S.KakaoShareButton>
           <S.MenuItemName>
             <FormattedMessage id="kakaotalk" />
@@ -120,8 +105,8 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
-          <S.MenuItemButton onClick={onClickShare}>
-            <FontAwesomeIcon icon={faShare} color={'white'} />
+          <S.MenuItemButton onClick={webShare}>
+            <IconShare />
           </S.MenuItemButton>
           <S.MenuItemName>
             <FormattedMessage id="shareResult" />

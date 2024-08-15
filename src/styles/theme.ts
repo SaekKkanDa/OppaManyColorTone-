@@ -16,6 +16,14 @@ const theme = {
     800: '#27272a',
     900: '#18181b',
   },
+
+  font: {
+    size: {
+      sm: '10px',
+      md: '16px',
+      lg: '24px',
+    },
+  },
 };
 
 export default theme;

@@ -1,6 +1,5 @@
 import { withDefault } from '@Base/utils/dataExtension';
 import omctError, { EOmctErrorNo } from '@Constant/errorKeyValue';
-
 import { FirebaseError } from 'firebase/app';
 
 export function parseError(error: unknown): OmctErrorResponse {

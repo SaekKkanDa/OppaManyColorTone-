@@ -12,6 +12,11 @@ const nextConfig = {
   devIndicators: {
     buildActivity: false,
   },
+  images: {
+    remotePatterns: [
+      { protocol: 'https', hostname: 'firebasestorage.googleapis.com' },
+    ],
+  },
   // HJ TODO: 학습 필요
   sentry: {
     autoInstrumentServerFunctions: false,
