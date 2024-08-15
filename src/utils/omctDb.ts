@@ -18,6 +18,7 @@ const console = new OmctConsole('OmctDB');
 class OmctDb extends OmctFirebaseApp {
   static #instance: InstanceType<typeof OmctDb>;
   static readonly MAX_RETRY_CNT = 3;
+  static readonly IMAGE_EXTENSION = 'png';
 
   private m_docRef: DocumentReference<DocumentData>;
   private m_personaImagePath: string;
@@ -56,11 +57,15 @@ class OmctDb extends OmctFirebaseApp {
   public async sendPersonalImage(file: Blob | Uint8Array | ArrayBuffer) {
     const buffer = file instanceof Blob ? await file.arrayBuffer() : file;
     const fileName = encryptionMd5(buffer);
+    const fileNameWithExt = `${fileName}.${OmctDb.IMAGE_EXTENSION}`;
+    const filePath = `${this.m_personaImagePath}/${fileNameWithExt}`;
+
+    const imgRef = this.getStorageRef(filePath);
 
     try {
-      const ref = this.getStorageRef(fileName);
+      await getDownloadURL(imgRef);
       // image have already been uploaded
-      return ref;
+      return imgRef;
     } catch (e: unknown) {
       const err = parseError(e);
       if (err.code !== EOmctErrorNo.FIREBASE_STORAGE_OBJECT_NOT_FOUND) {
@@ -69,13 +74,9 @@ class OmctDb extends OmctFirebaseApp {
       }
     }
 
-    const imgRef = ref(
-      this.m_storage,
-      `${this.m_personaImagePath}/${fileName}.png`
-    );
+    await uploadBytes(imgRef, file);
 
-    const storageRef = (await uploadBytes(imgRef, file)).ref;
-    return storageRef;
+    return imgRef;
   }
 
   private getStorageRef(url?: string) {
@@ -83,7 +84,11 @@ class OmctDb extends OmctFirebaseApp {
   }
 
   public async getPersonalImageUrl(name: string) {
-    const path = `${this.m_personaImagePath}/${name}.png`;
+    const nameWithExt = name.includes('.')
+      ? name
+      : `${name}.${OmctDb.IMAGE_EXTENSION}`;
+
+    const path = `${this.m_personaImagePath}/${nameWithExt}`;
     const imgRef = this.getStorageRef(path);
     return getDownloadURL(imgRef);
   }

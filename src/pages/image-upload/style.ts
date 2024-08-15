@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Button, flexCustom } from '@Styles/theme';
+import Link from 'next/link';
 
 export const CroppedImageBox = styled(Image)`
   width: 100%;
@@ -64,10 +65,11 @@ export const Notification = styled(Guidance)`
 `;
 
 export const NextButton = styled(Button)`
-  position: fixed;
-  bottom: 48px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  // position: fixed;
+  // bottom: 48px;
+  // left: 50%;
+  // transform: translateX(-50%);
 `;
 
 // Modal
@@ -119,4 +121,16 @@ export const MenuItemName = styled.div`
   margin-top: 4px;
   text-align: center;
   font-size: 12px;
+`;
+
+export const ButtonWrapper = styled.div`
+  ${flexCustom('row', 'center', 'space-between')}
+  margin-top: 16px;
+  width: 100%;
+  gap: 12px;
+  padding: 0px 12px;
+`;
+
+export const ButtonLink = styled(Link)`
+  width: 100%;
 `;

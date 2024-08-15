@@ -19,7 +19,6 @@ import { useModal } from '@Base/hooks/useModal';
 import FaceDetection from './FaceDetection';
 import * as S from './style';
 import { isEmpty, isNotNil } from '@Base/utils/check';
-import { useTrigger } from '@Base/hooks/useTrigger';
 import { imageFileState, shareModalState } from './imageUpload.atom';
 import useModalRecoil from '@Hooks/useModalRecoil';
 import ShareModalSubPage from './subpages/shareModal.subpage';
@@ -54,11 +53,6 @@ function ImageUploadPage() {
   // related to start button
   const { open: openShareRecommendationModal } = useModalRecoil({
     state: shareModalState,
-  });
-
-  useTrigger({
-    triggerFn: () => !isEmpty(imagePreviewURL),
-    onTrigger: () => openShareRecommendationModal(),
   });
 
   return (
@@ -137,11 +131,19 @@ function ImageUploadPage() {
             <FormattedMessage id="notification_3" />
           </S.Notification>
 
-          <Link href={ROUTE_PATH.choiceColor}>
-            <S.NextButton disabled={!imagePreviewURL}>
-              <FormattedMessage id="nextButton" />
+          <S.ButtonWrapper>
+            <S.NextButton
+              disabled={!imagePreviewURL}
+              onClick={openShareRecommendationModal}
+            >
+              골라줘~
             </S.NextButton>
-          </Link>
+            <S.ButtonLink href={ROUTE_PATH.choiceColor}>
+              <S.NextButton disabled={!imagePreviewURL}>
+                <FormattedMessage id="nextButton" />
+              </S.NextButton>
+            </S.ButtonLink>
+          </S.ButtonWrapper>
         </S.FlexContainer>
       </ModalContainer>
       <ShareModalSubPage />

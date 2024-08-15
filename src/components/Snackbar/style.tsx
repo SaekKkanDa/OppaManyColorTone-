@@ -2,25 +2,25 @@ import styled, { css, keyframes } from 'styled-components';
 
 const roadRunnerIn = keyframes`
   0% {
-    transform:translateX(-1500px) skewX(30deg) scaleX(1.3);
+    transform:translate(-1500px, -50%) skewX(30deg) scaleX(1.3);
   }
   70% {
-    transform:translateX(30px) skewX(0deg) scaleX(.9);
+    transform:translate(30px, -50%) skewX(0deg) scaleX(.9);
   }
   100% {
-    transform:translateX(-50%) skewX(0deg) scaleX(1);
+    transform:translate(-50%, -50%) skewX(0deg) scaleX(1);
   }
 `;
 
 const roadRunnerOut = keyframes`
   0% {
-    transform:translateX(-50%) skewX(0deg) scaleX(1);
+    transform:translate(-50%, -50%) skewX(0deg) scaleX(1);
   }
   30% {
-    transform:translateX(-30px) skewX(-5deg) scaleX(.9);
+    transform:translate(-30px, -50%) skewX(-5deg) scaleX(.9);
   }
   100% {
-    transform:translateX(1500px) skewX(30deg) scaleX(1.3);
+    transform:translate(1500px, -50%) skewX(30deg) scaleX(1.3);
   }
 `;
 
@@ -50,11 +50,11 @@ export const Container = styled.div<{ isIn: boolean }>`
   }
 
   transform-origin: center;
-  transform: tranlsateX(-1500px);
+  transform: translate(-50%, -50%);
   ${({ isIn }) =>
     isIn
       ? css`
-          animation: ${roadRunnerIn} 0.3s cubic-bezier(0.165, 0.84, 0.44, 1)
+          animation: ${roadRunnerIn} 0.5s cubic-bezier(0.165, 0.84, 0.44, 1)
             forwards;
         `
       : css`
