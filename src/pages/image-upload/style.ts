@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styled from 'styled-components';
 import { Button, flexCustom } from '@Styles/theme';
+import Link from 'next/link';
 
 export const CroppedImageBox = styled(Image)`
   width: 100%;
@@ -64,8 +65,72 @@ export const Notification = styled(Guidance)`
 `;
 
 export const NextButton = styled(Button)`
-  position: fixed;
-  bottom: 48px;
-  left: 50%;
-  transform: translateX(-50%);
+  width: 100%;
+  // position: fixed;
+  // bottom: 48px;
+  // left: 50%;
+  // transform: translateX(-50%);
+`;
+
+// Modal
+export const ModalText = styled.div`
+  text-align: center;
+`;
+
+export const ModalButton = styled(Button)`
+  &&& {
+    font-size: ${({ theme }) => theme.font.size.md};
+  }
+`;
+
+export const MenuContainer = styled.div`
+  ${flexCustom('row', 'inherit', 'space-around')}
+  padding: 10px 10px;
+`;
+
+export const MenuItemWrapper = styled.div`
+  ${flexCustom('column', 'center', 'center')}
+`;
+
+export const MenuItemButton = styled.button`
+  ${flexCustom('column', 'center', 'center')}
+  padding: 10px;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background-color: ${({ theme }) => theme.gray[800]};
+  aspect-ratio: 1/1;
+  font-size: 48px;
+  cursor: pointer;
+
+  svg {
+    width: 100%;
+  }
+`;
+
+export const KakaoShareButton = styled.button`
+  ${flexCustom('column', 'center', 'center')}
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  aspect-ratio: 1/1;
+  cursor: pointer;
+`;
+
+export const MenuItemName = styled.div`
+  margin-top: 4px;
+  text-align: center;
+  font-size: 12px;
+`;
+
+export const ButtonWrapper = styled.div`
+  ${flexCustom('row', 'center', 'space-between')}
+  margin-top: 16px;
+  width: 100%;
+  gap: 12px;
+  padding: 0px 12px;
+`;
+
+export const ButtonLink = styled(Link)`
+  width: 100%;
 `;

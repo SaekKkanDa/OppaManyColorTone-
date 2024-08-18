@@ -7,6 +7,41 @@ import * as S from './style';
 import { AdSense } from '@Components/AdSense';
 import useCropImg from '@Hooks/useCropImg';
 import shuffle from '@Utils/shuffle';
+import { useSearchParams } from 'next/navigation';
+import { isEmpty, isNil, isNotNil } from '@Base/utils/check';
+import omctDb from '@Utils/omctDb';
+import LoadingIndicator from '@Components/LoadingIndicator';
+import { useRecoilState } from 'recoil';
+import { CropImage } from '@Recoil/app';
+import { withLoadingRouter } from '@Components/WithLoadingRouter/withLoadingRouter';
+import { OnboardingPage } from '@Pages/choice-color/subpages/onboadring.subpage';
+
+const Page = () => {
+  const searchParams = useSearchParams();
+  const imageName = searchParams.get('imageName');
+  const [isLoading, setIsLoading] = useState(
+    isNotNil(imageName) && !isEmpty(imageName)
+  );
+  const [, setCropImg] = useRecoilState(CropImage);
+
+  useEffect(() => {
+    if (isNil(imageName) || isEmpty(imageName)) return;
+
+    omctDb
+      .getPersonalImageUrl(imageName)
+      .then(async (data) => {
+        setCropImg(data);
+      })
+      .catch()
+      .finally(() => {
+        setIsLoading(false);
+      });
+  }, [imageName, setCropImg]);
+
+  if (isLoading) return <LoadingIndicator />;
+
+  return <ChoiceColor />;
+};
 
 function ChoiceColor() {
   const [selectedTypes, setSelectedTypes] = useState<ColorType[]>([]);
@@ -21,7 +56,7 @@ function ChoiceColor() {
       return shuffle(choiceColorData[stageNum]);
     }
     return choiceColorData[stageNum];
-  }, [stageNum]);
+  }, [MAX_STAGE_NUM, stageNum]);
 
   const bonusColorTypes = useSelectBonusColorTypes(
     selectedTypes,
@@ -63,8 +98,9 @@ function ChoiceColor() {
         <BonusStage userImg={userImg} bonusColorTypes={bonusColorTypes} />
       )}
       <AdSense data-ad-slot={'2551404503'} />
+      <OnboardingPage />
     </S.Wrapper>
   );
 }
 
-export default ChoiceColor;
+export default withLoadingRouter(Page);

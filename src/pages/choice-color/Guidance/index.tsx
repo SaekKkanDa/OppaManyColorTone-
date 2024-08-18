@@ -15,7 +15,7 @@ function Guidance() {
 
   return (
     <S.Guidance>
-      <FormattedMessage id="explanation_1" />{' '}
+      <FormattedMessage id="explanation_1" />
       <button onClick={handleOpenGuideModal}>
         <FontAwesomeIcon icon={faCircleQuestion} />
       </button>

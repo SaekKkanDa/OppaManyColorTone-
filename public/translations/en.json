@@ -220,5 +220,10 @@
   "alertFailCopy": "Failed to copy...🥲",
   "alertMacOS": "Chrome browser on Mac is not working. Open in another browser. 🥰",
   "alertKakao": "It is not working on kakaoTalk InAppBrowser. Open in another browser. 🥰",
-  "alertNotSupportedBrowser": "It is not working on this browser. Open in another browser. 🥰"
+  "alertNotSupportedBrowser": "It is not working on this browser. Open in another browser. 🥰",
+  "shareModal_1": "How about letting your friend choose instead?",
+  "shareModal_2": "Choose for you",
+  "shareModal_3": "Share!",
+  "onboarding1": "Among the four cards, choose a card\nthat looks best on you.",
+  "onboarding-confirm": "Confirm"
 }
