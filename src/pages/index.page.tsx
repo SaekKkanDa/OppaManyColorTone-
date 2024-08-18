@@ -5,9 +5,9 @@ import { useRecoilState, useSetRecoilState } from 'recoil';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette, faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { useCountUp } from '@Base/hooks/useCountUp';
 import { CropImage, Locale } from '@Recoil/app';
 import ColorChipSpinner from '@Components/ColorChipSpinner';
-import { useCountUp } from '@Hooks/useCountUp';
 import omctDb from '@Utils/omctDb';
 import { canWebShare, webShare } from '@Utils/share';
 import ROUTE_PATH from '@Constant/routePath';
@@ -32,7 +32,7 @@ function LandingPage() {
   }, []);
 
   const COUNT_UP_DURATION = 2000;
-  const count = useCountUp(numberOfUsers, COUNT_UP_DURATION);
+  const count = useCountUp(numberOfUsers, COUNT_UP_DURATION, true);
 
   useEffect(() => {
     setUserImg('');
@@ -87,7 +87,8 @@ function LandingPage() {
         <S.LandingBottomDiv>
           <S.UserCount>
             <FormattedMessage id="userCount_1" /> {count.toLocaleString()}
-            <FormattedMessage id="userCount_2" />
+            <FormattedMessage id="userCount_2" />{' '}
+            <FormattedMessage id="userCount_3" />
           </S.UserCount>
 
           <S.StartButton onClick={onClickStartButton}>

@@ -13,6 +13,7 @@ import {
   faSwatchbook,
 } from '@fortawesome/free-solid-svg-icons';
 import { useIntersectionObserver } from '@Base/hooks/useIntersectionObserver';
+import { useCountUp } from '@Base/hooks/useCountUp';
 import { CropImage, Locale } from '@Recoil/app';
 import omctDb from '@Utils/omctDb';
 import { canWebShare, webShare } from '@Utils/share';
@@ -22,7 +23,7 @@ import * as S from './style';
 
 export default function Home() {
   const [numberOfUsers, setNumberOfUsers] = useState(0);
-  const [count, setCount] = useState(0);
+  const [isInViewBottom, setIsInViewBottom] = useState(false);
   const [isRunningStartTransition, setIsRunningStartTransition] =
     useState(false);
   const router = useRouter();
@@ -31,11 +32,31 @@ export default function Home() {
   const setUserImg = useSetRecoilState(CropImage);
   const [locale, setLocale] = useRecoilState(Locale);
 
-  const onIntersect = (entry: IntersectionObserverEntry) => {
-    if (entry.isIntersecting) setCount(numberOfUsers);
-  };
+  const { ref: topRef } = useIntersectionObserver(
+    (entry: IntersectionObserverEntry) => {
+      if (entry.isIntersecting) setIsInViewBottom(false);
+    }
+  );
+  const { ref: bottomRef } = useIntersectionObserver(
+    (entry: IntersectionObserverEntry) => {
+      if (entry.isIntersecting) setIsInViewBottom(entry.isIntersecting);
+    }
+  );
 
-  const { ref: observerRef } = useIntersectionObserver(onIntersect);
+  const COUNT_UP_DURATION = 2000;
+  const userCount = useCountUp(
+    numberOfUsers,
+    COUNT_UP_DURATION,
+    isInViewBottom
+  );
+
+  useEffect(() => {
+    if (window !== undefined) document.body.style.backgroundColor = S.bgColor;
+
+    return () => {
+      if (window !== undefined) document.body.style.backgroundColor = '';
+    };
+  }, []);
 
   useEffect(() => {
     const getNumberOfUsers = async () => {
@@ -50,7 +71,6 @@ export default function Home() {
   }, [setUserImg]);
 
   const handleClickStart = () => {
-    // router.push(ROUTE_PATH.imageUpload);
     setIsRunningStartTransition(true);
   };
 
@@ -58,9 +78,12 @@ export default function Home() {
     router.push(ROUTE_PATH.imageUpload);
   };
 
-  const handleClickDown = () => {
+  const handleScroll = () => {
     if (typeof window !== 'undefined')
-      scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+      scrollTo({
+        top: isInViewBottom ? 0 : document.body.scrollHeight,
+        behavior: 'smooth',
+      });
   };
 
   const handleViewAllType = () => {
@@ -79,7 +102,7 @@ export default function Home() {
 
   const onLoadSpline = (app: Application) => {
     app.setZoom(0.15);
-    app.setBackgroundColor('#2f2f37');
+    app.setBackgroundColor(S.bgColor);
   };
 
   return (
@@ -89,7 +112,7 @@ export default function Home() {
           {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[locale]}
         </S.LanguageButton>
 
-        <S.TitleWrapper>
+        <S.TitleWrapper ref={topRef}>
           <S.Title>
             <FormattedMessage id="landingTitle" />
           </S.Title>
@@ -107,27 +130,16 @@ export default function Home() {
           onLoad={onLoadSpline}
         />
 
-        <S.DownButton onClick={handleClickDown}>
-          <FontAwesomeIcon icon={faChevronDown} size="xl" />
-        </S.DownButton>
+        <S.ScrollButton $isInViewBottom={isInViewBottom} onClick={handleScroll}>
+          <FontAwesomeIcon icon={faChevronDown} />
+        </S.ScrollButton>
       </S.TopPage>
 
       <S.BottomPage>
-        <S.UserCountMessage ref={observerRef}>
+        <S.UserCountMessage ref={bottomRef} $isInViewBottom={isInViewBottom}>
           <FormattedMessage id="userCount_1" />
           <S.UserCountWrapper>
-            <S.UserCount
-              animateToNumber={count}
-              includeComma
-              transitions={(index) => ({
-                duration: index + 0.01,
-              })}
-              fontStyle={{
-                fontSize: '2.5rem',
-                fontWeight: 600,
-                letterSpacing: '-0.05rem',
-              }}
-            />
+            <S.UserCount>{userCount.toLocaleString()}</S.UserCount>
             <FormattedMessage id="userCount_2" />
           </S.UserCountWrapper>
           <FormattedMessage id="userCount_3" />
@@ -144,7 +156,7 @@ export default function Home() {
           onTransitionEnd={onStartTransitionEnd}
         />
 
-        <S.MiniButtonWrapper>
+        <S.MiniButtonWrapper $isInViewBottom={isInViewBottom}>
           <S.MiniButton onClick={handleShare}>
             <FontAwesomeIcon icon={faShareNodes} />
             <FormattedMessage id="shareButton" />

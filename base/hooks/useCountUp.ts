@@ -6,10 +6,16 @@ const easeOutExpo = (rate: number) => {
 };
 
 // 점차 느려지는 count up 함수
-export const useCountUp = (targetNumber: number, duration: number) => {
+export const useCountUp = (
+  targetNumber: number,
+  duration: number,
+  isInView: boolean
+) => {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
+    if (!isInView) return;
+
     const frameRate = 1000 / 60;
     const totalFrame = Math.round(duration / frameRate);
 
@@ -27,7 +33,7 @@ export const useCountUp = (targetNumber: number, duration: number) => {
     return () => {
       clearInterval(counter);
     };
-  }, [duration, targetNumber]);
+  }, [duration, isInView, targetNumber]);
 
   return count;
 };

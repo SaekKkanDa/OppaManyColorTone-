@@ -40,14 +40,14 @@ export const flexCustom = (
 `;
 
 export const Button = styled.button`
-  padding: 16px 0;
+  padding: 1rem 0;
   width: 320px;
   max-width: 100%;
-  border-radius: 20px;
+  border-radius: 1.25rem;
 
   background-color: ${theme.gray[800]};
   color: ${theme.white};
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: 500;
   cursor: pointer;
 

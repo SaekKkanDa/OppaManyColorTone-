@@ -16,8 +16,8 @@ export const LandingTitleDiv = styled.div`
 `;
 
 export const LandingTitle = styled.h1`
-  color: ${({ theme }) => theme.gray[200]};
-  font-size: min(14.75vw, 52px);
+  color: ${({ theme }) => theme.gray[300]};
+  font-size: 2.5rem;
   font-weight: 700;
   text-align: center;
   letter-spacing: -0.02em;
@@ -28,9 +28,9 @@ export const TitleHighlight = styled.span`
 `;
 
 export const LandingSubTitle = styled.h2`
-  font-size: min(9.5vw, 32px);
+  font-size: 1.5rem;
   font-weight: 700;
-  margin-top: 20px;
+  margin-top: 0.5rem;
   text-align: center;
 `;
 
@@ -114,14 +114,12 @@ export const LandingBottomDiv = styled.div`
 `;
 
 export const UserCount = styled.div`
-  margin-bottom: 20px;
-  font-size: 18px;
-  font-weight: 400;
+  margin-bottom: 1rem;
+  font-weight: 500;
 `;
 
 export const StartButton = styled(Button)`
-  height: 80px;
-  font-size: 40px;
+  font-size: 2rem;
   font-weight: 500;
   cursor: pointer;
 `;
