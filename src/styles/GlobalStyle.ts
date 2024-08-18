@@ -1,29 +1,24 @@
 import localFont from 'next/font/local';
-import { Noto_Sans_KR } from 'next/font/google';
 import { createGlobalStyle } from 'styled-components';
 import ResetStyle from './resetStyle';
 import theme from './theme';
 
-const notoSansKr = Noto_Sans_KR({
-  subsets: ['latin'],
-  weight: ['400', '500', '700', '900'],
+const pretendard = localFont({
+  src: '../../public/fonts/PretendardVariable.woff2',
   display: 'swap',
+  weight: '45 920',
 });
 
-const jalnan = localFont({
-  src: [
-    {
-      path: '../../public/fonts/JalnanOTF00.woff',
-      weight: 'normal',
-    },
-  ],
+const moyamoya = localFont({
+  src: '../../public/fonts/Cafe24Moyamoya-Face-v1.0.woff2',
 });
 
 const GlobalStyle = createGlobalStyle`
   ${ResetStyle}
 
   :root {
-    --font-jalnan: ${jalnan.style.fontFamily};
+    --font-pretendard: ${pretendard.style.fontFamily};
+    --font-moyamoya: ${moyamoya.style.fontFamily};
     --viewport-max-width: 400px;
   }
 
@@ -32,7 +27,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   html {
-    font-family: ${notoSansKr.style.fontFamily};
+    font-family: ${pretendard.style.fontFamily}, "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue", "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
   }
 	
   body {
@@ -46,7 +41,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   h1, h2, h3, h4, h5, h6, button {
-    font-family: var(--font-jalnan);
+    font-family: var(--font-moyamoya);
   }
 
   button {
