@@ -22,8 +22,10 @@ export const Wrapper = styled.div`
 
 export const BackButton = styled.button`
   align-self: flex-start;
-  margin: -8px 0 0 -8px;
-  font-size: 20px;
+  margin: -0.75rem 0 0 -0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: ${({ theme }) => theme.gray[700]};
   cursor: pointer;
 `;
 

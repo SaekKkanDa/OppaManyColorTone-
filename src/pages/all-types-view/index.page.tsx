@@ -6,7 +6,7 @@ import {
   injectIntl,
 } from 'react-intl';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import color from '@Data/color';
 import resultColorData from '@Data/resultColorData';
 import theme from '@Styles/theme';
@@ -33,7 +33,7 @@ const AllTypesView = ({ intl }: WrappedComponentProps) => {
   return (
     <S.Wrapper>
       <S.BackButton onClick={() => router.back()}>
-        <FontAwesomeIcon icon={faArrowLeft} />
+        <FontAwesomeIcon icon={faChevronLeft} />
       </S.BackButton>
 
       <S.Title>
