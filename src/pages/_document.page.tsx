@@ -7,7 +7,6 @@ import Document, {
   DocumentContext,
   DocumentInitialProps,
 } from 'next/document';
-import i18nextConfig from '../../next-i18next.config';
 import { ServerStyleSheet } from 'styled-components';
 
 export default class MyDocument extends Document {
@@ -40,11 +39,8 @@ export default class MyDocument extends Document {
   }
 
   render() {
-    const currentLocale =
-      this.props.__NEXT_DATA__.locale ?? i18nextConfig.i18n.defaultLocale;
-
     return (
-      <Html lang={currentLocale}>
+      <Html>
         <Head>
           <meta
             name="application-name"
