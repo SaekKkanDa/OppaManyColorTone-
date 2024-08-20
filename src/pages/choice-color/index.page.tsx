@@ -95,7 +95,11 @@ function ChoiceColor() {
           onBasicClick={onBasicClick}
         />
       ) : (
-        <BonusStage userImg={userImg} bonusColorTypes={bonusColorTypes} />
+        <BonusStage
+          userImg={userImg}
+          bonusColorTypes={bonusColorTypes}
+          selectedColor={selectedColor}
+        />
       )}
       <AdSense data-ad-slot={'2551404503'} />
       <OnboardingPage />

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import useViewportHeight from '@Hooks/useViewportHeight';
-import { useRecoilValue, useRecoilState } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import {
   globalBgColorAtom,
   globalTextColorAtom,
@@ -19,6 +19,9 @@ interface MobileLayoutProps {
 
 const Wrapper = styled.div<MobileLayoutProps>`
   margin: 0 auto;
+  width: 100%;
+  max-width: var(--viewport-max-width);
+  min-height: 100dvh;
   background-color: ${({ backgroundColor }) => backgroundColor};
   color: ${({ textColor }) => textColor};
 `;
@@ -26,7 +29,7 @@ const Wrapper = styled.div<MobileLayoutProps>`
 function MobileLayout({ children }: React.PropsWithChildren) {
   const bgColor = useRecoilValue(globalBgColorAtom);
   const textColor = useRecoilValue(globalTextColorAtom);
-  const [locale] = useRecoilState(Locale);
+  const locale = useRecoilValue(Locale);
   useViewportHeight();
 
   const translationsForUsersLocale = {

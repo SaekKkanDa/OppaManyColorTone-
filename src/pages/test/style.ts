@@ -27,11 +27,11 @@ export const TopPage = styled.div`
 
 export const TitleWrapper = styled.div`
   position: absolute;
-  top: 3rem;
+  top: 2rem;
   z-index: 2;
   padding: 2.5rem;
   ${flexCustom('column', 'center', 'center')}
-  row-gap: 0.5rem;
+  row-gap: 0.25rem;
   width: 100%;
   text-align: center;
 `;
@@ -39,13 +39,15 @@ export const TitleWrapper = styled.div`
 export const Title = styled.h1`
   font-size: 2.5rem;
   color: ${({ theme }) => theme.gray[50]};
+  text-shadow: 2px 2px 1px ${({ theme }) => theme.gray[800]};
   pointer-events: none;
 `;
 
 export const Subtitle = styled.h2`
   font-weight: 700;
   font-size: 1.5rem;
-  color: ${({ theme }) => theme.gray[400]};
+  color: ${({ theme }) => theme.gray[350]};
+  text-shadow: 1px 1px 1px ${({ theme }) => theme.gray[800]};
   line-height: 1.125;
   white-space: pre-line;
   pointer-events: none;
@@ -64,6 +66,7 @@ export const LanguageButton = styled.button`
   color: ${({ theme }) => theme.gray[200]};
   font-family: var(--font-pretendard);
   font-size: 0.75rem;
+  line-height: 1;
 
   &:active {
     background-color: ${({ theme }) => theme.gray[800]};
@@ -78,11 +81,17 @@ export const StartButton = styled(Button)<{
   position: fixed;
   bottom: 2.5rem;
   z-index: 1;
-  background-color: ${({ theme }) => theme.gray[100]};
-  color: ${({ theme, $isRunningStartTransition }) =>
-    $isRunningStartTransition ? theme.gray[100] : theme.gray[900]};
-  font-size: 2rem;
-  font-weight: 500;
+  && {
+    background-color: ${({ theme }) => theme.gray[100]};
+    color: ${({ theme, $isRunningStartTransition }) =>
+      $isRunningStartTransition ? theme.gray[100] : theme.gray[900]};
+    font-size: 2rem;
+
+    &:active {
+      background-color: ${({ theme }) => theme.gray[200]};
+      color: ${({ theme }) => theme.gray[900]};
+    }
+  }
 
   -webkit-box-shadow: 0px 0px 20px 1px ${({ theme }) => `${theme.gray[100]}80`};
   -moz-box-shadow: 0px 0px 20px 1px ${({ theme }) => `${theme.gray[100]}80`};
@@ -97,11 +106,6 @@ export const StartButton = styled(Button)<{
     to {
       transform: scale(1.025);
     }
-  }
-
-  &:active {
-    background-color: ${({ theme }) => theme.gray[200]};
-    color: ${({ theme }) => theme.gray[900]};
   }
 `;
 
@@ -169,7 +173,7 @@ export const UserCountMessage = styled.div<{
 
 export const UserCountWrapper = styled.div`
   ${flexCustom('row', 'center', 'center')}
-  column-gap: 0.25rem;
+  line-height: 1rem;
 `;
 
 export const UserCount = styled.span`
@@ -198,6 +202,7 @@ export const MiniButton = styled.button`
   border: 1px solid ${({ theme }) => theme.gray[200]};
   border-radius: 1.5rem;
   color: ${({ theme }) => theme.gray[200]};
+  line-height: 1;
 
   & svg {
     flex-basis: 1rem;

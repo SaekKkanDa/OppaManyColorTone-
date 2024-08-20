@@ -96,13 +96,13 @@ function LandingPage() {
           </S.StartButton>
 
           <S.MiniButtonWrapper>
-            <S.MiniButton $type="icon" onClick={handleViewAllType}>
+            <S.MiniButton onClick={handleViewAllType}>
               <FontAwesomeIcon icon={faPalette} />
             </S.MiniButton>
-            <S.MiniButton $type="text" onClick={handleLocale}>
+            <S.MiniButton onClick={handleLocale}>
               {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[locale]}
             </S.MiniButton>
-            <S.MiniButton $type="icon" onClick={handleShare}>
+            <S.MiniButton onClick={handleShare}>
               <FontAwesomeIcon icon={faShareNodes} />
             </S.MiniButton>
           </S.MiniButtonWrapper>

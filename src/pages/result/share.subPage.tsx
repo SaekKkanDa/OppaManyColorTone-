@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { FormattedMessage } from 'react-intl';
 
 import { isEmpty, isNil } from '@Base/utils/check';
@@ -24,6 +24,8 @@ interface MenuSubPageProps {
 }
 
 function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
+  const router = useRouter();
+
   // alert modal
   const {
     isOpen: isOpenAlertModal,
@@ -74,6 +76,10 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
     openAlertModal(copyAlertMsg);
   };
 
+  const handleGoToAllTypesView = () => {
+    router.push(ROUTE_PATH.allTypesView);
+  };
+
   return (
     <>
       <S.MenuContainer>
@@ -114,14 +120,12 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
         </S.MenuItemWrapper>
       </S.MenuContainer>
 
-      <S.ButtonsWrapper>
-        <Link href={ROUTE_PATH.allTypesView}>
-          <S.AllTypesButton>
-            <FormattedMessage id="allTypes" />
-          </S.AllTypesButton>
-        </Link>
+      <S.ButtonWrapper>
         <RestartButton />
-      </S.ButtonsWrapper>
+        <S.AllTypesButton onClick={handleGoToAllTypesView}>
+          <FormattedMessage id="viewAllTypesButton" />
+        </S.AllTypesButton>
+      </S.ButtonWrapper>
       {isOpenAlertModal && !isEmpty(alertModalMessage) && (
         <AlertModal isOpen={isOpenAlertModal} handleClose={closeAlertModal}>
           <FormattedMessage id={alertModalMessage} />

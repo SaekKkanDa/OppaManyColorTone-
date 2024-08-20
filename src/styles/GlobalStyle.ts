@@ -19,7 +19,7 @@ const GlobalStyle = createGlobalStyle`
   :root {
     --font-pretendard: ${pretendard.style.fontFamily};
     --font-moyamoya: ${moyamoya.style.fontFamily};
-    --viewport-max-width: 400px;
+    --viewport-max-width: 430px;
   }
 
   * {
@@ -34,10 +34,7 @@ const GlobalStyle = createGlobalStyle`
     background-color: ${theme.gray[100]};
     color: ${theme.gray[900]};
     font-size: 16px;
-  }
-
-  div#__next > div > div {
-    min-height: 100dvh;
+    line-height: 1.5;
   }
 
   h1, h2, h3, h4, h5, h6, button {
@@ -46,6 +43,7 @@ const GlobalStyle = createGlobalStyle`
 
   button {
     cursor: pointer;
+    line-height: 1;
   }
 `;
 

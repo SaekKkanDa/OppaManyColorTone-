@@ -85,23 +85,11 @@ const AllTypesView = ({ intl }: WrappedComponentProps) => {
       />
 
       {colorType ? (
-        <>
+        <S.ColorTypeWrapper>
           <S.ColorTypeTitle color={color[selectedIndex].textColor}>
             <FormattedMessage id={`${colorType}.name`} />
           </S.ColorTypeTitle>
-          {/* <S.TagWrapper>
-            {resultColorData[colorType].tags.map(
-              ({ keyword, backgroundColor, textColor }) => (
-                <S.Tag
-                  key={keyword}
-                  backgroundColor={backgroundColor}
-                  textColor={textColor}
-                >
-                  {`#${keyword}`}
-                </S.Tag>
-              )
-            )}
-          </S.TagWrapper> */}
+
           <Tag colorType={colorType} tags={resultColorData[colorType].tags} />
           <S.PaletteGrid>
             {resultColorData[colorType].gridColors.map(
@@ -113,7 +101,7 @@ const AllTypesView = ({ intl }: WrappedComponentProps) => {
               )
             )}
           </S.PaletteGrid>
-        </>
+        </S.ColorTypeWrapper>
       ) : (
         <S.Description>
           <FormattedMessage id="clickType" />

@@ -15,14 +15,23 @@ function Guidance() {
 
   return (
     <S.Guidance>
-      <FormattedMessage id="explanation_1" />
-      <button onClick={handleOpenGuideModal}>
-        <FontAwesomeIcon icon={faCircleQuestion} />
-      </button>
+      <S.MainGuide>
+        <FormattedMessage id="explanation_1" />
+        <S.MoreGuideButton onClick={handleOpenGuideModal}>
+          <FontAwesomeIcon icon={faCircleQuestion} />
+        </S.MoreGuideButton>
+      </S.MainGuide>
+      <S.SubGuide>
+        <FormattedMessage id="explanation_2" />
+        <br />
+        <FormattedMessage id="explanation_3" />
+      </S.SubGuide>
+
       {isOpenGuideModal && (
         <AlertModal
           isOpen={isOpenGuideModal}
           title="colorChoiceGuideTitle"
+          textSize="sm"
           handleClose={() => setIsOpenGuideModal(false)}
         >
           <S.ColorChoiceGuideWrapper>
@@ -38,11 +47,6 @@ function Guidance() {
           </S.ColorChoiceGuideWrapper>
         </AlertModal>
       )}
-      <S.Explanation>
-        <FormattedMessage id="explanation_2" />
-        <br />
-        <FormattedMessage id="explanation_3" />
-      </S.Explanation>
     </S.Guidance>
   );
 }

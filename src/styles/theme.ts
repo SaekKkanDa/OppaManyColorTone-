@@ -9,6 +9,7 @@ const theme = {
     150: '#f1f1f3',
     200: '#e4e4e7',
     300: '#d4d4d8',
+    350: '#BBBBC1',
     400: '#a1a1aa',
     500: '#71717a',
     600: '#52525b',
@@ -19,12 +20,18 @@ const theme = {
 
   font: {
     size: {
-      sm: '10px',
-      md: '16px',
-      lg: '24px',
+      '2xs': '0.625rem',
+      xs: '0.75rem',
+      sm: '0.875rem',
+      md: '1rem',
+      lg: '1.125rem',
+      xl: '1.25rem',
+      '1.5xl': '1.5rem',
+      '1.75xl': '1.75rem',
+      '2xl': '2rem',
     },
   },
-};
+} as const;
 
 export default theme;
 
@@ -39,16 +46,23 @@ export const flexCustom = (
   justify-content: ${justifyContent};
 `;
 
+export const layout = css`
+  min-height: 100dvh;
+  width: 100%;
+  padding: 2rem 1.5rem;
+`;
+
 export const Button = styled.button`
   padding: 1rem 0;
-  width: 320px;
-  max-width: 100%;
+  width: 100%;
+  max-width: calc(min(var(--viewport-max-width), 100vw) - 3rem);
   border-radius: 1.25rem;
 
   background-color: ${theme.gray[800]};
   color: ${theme.white};
   font-size: 1.5rem;
   font-weight: 500;
+  line-height: 1;
   cursor: pointer;
 
   &:active {
@@ -57,17 +71,26 @@ export const Button = styled.button`
 
   &:disabled {
     background-color: ${theme.gray[300]};
+    color: ${theme.gray[100]};
     cursor: not-allowed;
   }
 `;
 
 export const BorderedButton = styled(Button)`
   background-color: transparent;
-  border: 2px solid ${theme.gray[800]};
+  outline: 2px solid ${theme.gray[800]};
+  outline-offset: -2px;
   color: ${theme.gray[800]};
 
   &:active {
     background-color: ${theme.gray[200]};
+  }
+
+  &:disabled {
+    background-color: transparent;
+    outline-color: ${theme.gray[300]};
+    color: ${theme.gray[300]};
+    cursor: not-allowed;
   }
 `;
 
