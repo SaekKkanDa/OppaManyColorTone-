@@ -1,8 +1,10 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { type GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useSetRecoilState } from 'recoil';
 import Spline from '@splinetool/react-spline';
 import { Application } from '@splinetool/runtime';
@@ -169,3 +171,11 @@ export default function Home() {
     </S.PageWrapper>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
