@@ -1,12 +1,15 @@
 import { useRef, useState } from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { FormattedMessage } from 'react-intl';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { faFaceSmile } from '@fortawesome/free-regular-svg-icons';
+import { isEmpty, isNotNil } from '@Base/utils/check';
+import { useModal } from '@Base/hooks/useModal';
 import { CropImage } from '@Recoil/app';
+import useModalRecoil from '@Hooks/useModalRecoil';
 import ROUTE_PATH from '@Constant/routePath';
 import AlertModal from '@Components/AlertModal';
 import theme, {
@@ -14,16 +17,14 @@ import theme, {
   ModalBackground,
   ModalContainer,
 } from '@Styles/theme';
-import { useModal } from '@Base/hooks/useModal';
 
+import { imageFileState, shareModalState } from './imageUpload.atom';
+import ShareModalSubPage from './subpages/shareModal.subpage';
 import FaceDetection from './FaceDetection';
 import * as S from './style';
-import { isEmpty, isNotNil } from '@Base/utils/check';
-import { imageFileState, shareModalState } from './imageUpload.atom';
-import useModalRecoil from '@Hooks/useModalRecoil';
-import ShareModalSubPage from './subpages/shareModal.subpage';
 
 function ImageUploadPage() {
+  const router = useRouter();
   const [imageFile, setImageFile] = useRecoilState(imageFileState);
 
   const {
@@ -48,6 +49,10 @@ function ImageUploadPage() {
       return;
     }
     setAlertMessage('alertRetry');
+  };
+
+  const handleTestMyself = () => {
+    router.push(ROUTE_PATH.choiceColor);
   };
 
   // related to start button
@@ -80,69 +85,70 @@ function ImageUploadPage() {
         )}
 
         <S.FlexContainer isOpen={isOpenImageUploadModal}>
-          <S.ImageBox>
-            {imagePreviewURL ? (
-              <>
-                <S.CroppedImageBox
-                  src={imagePreviewURL}
-                  alt="preview image"
-                  width={150}
-                  height={150}
-                />
-                <S.InputFile
-                  ref={inputRef}
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={selectImage}
-                />
-              </>
-            ) : (
-              <S.ImageLabel>
-                <S.InputFile
-                  ref={inputRef}
-                  type="file"
-                  name="image"
-                  accept="image/*"
-                  onChange={selectImage}
-                />
-                <FontAwesomeIcon
-                  icon={faUserPlus}
-                  size="3x"
-                  color={theme.gray[300]}
-                />
-              </S.ImageLabel>
-            )}
-          </S.ImageBox>
+          <S.ImageSelectWrapper>
+            <S.ImageBox>
+              {imagePreviewURL ? (
+                <>
+                  <S.CroppedImageBox
+                    src={imagePreviewURL}
+                    alt="preview image"
+                    width={150}
+                    height={150}
+                  />
+                  <S.InputFile
+                    ref={inputRef}
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={selectImage}
+                  />
+                </>
+              ) : (
+                <S.ImageLabel>
+                  <S.InputFile
+                    ref={inputRef}
+                    type="file"
+                    name="image"
+                    accept="image/*"
+                    onChange={selectImage}
+                  />
+                  <FontAwesomeIcon
+                    icon={faUserPlus}
+                    size="3x"
+                    color={theme.gray[300]}
+                  />
+                </S.ImageLabel>
+              )}
+            </S.ImageBox>
 
-          <S.SelectImgButton onClick={clickInput}>
-            <FormattedMessage id="selectImgButton" />
-          </S.SelectImgButton>
-          <S.Guidance>
-            <FormattedMessage id="guidance" />
-          </S.Guidance>
-          <S.Notification>
-            <h6>
-              <FontAwesomeIcon icon={faFaceSmile} size="sm" />
-              <FormattedMessage id="notification_1" />
-            </h6>
-            <FormattedMessage id="notification_2" />
-            <br />
-            <FormattedMessage id="notification_3" />
-          </S.Notification>
+            <S.SelectImgButton onClick={clickInput}>
+              <FormattedMessage id="selectImgButton" />
+            </S.SelectImgButton>
+            <S.Guidance>
+              <FormattedMessage id="guidance" />
+            </S.Guidance>
+            <S.Notification>
+              <h6>
+                <FontAwesomeIcon icon={faFaceSmile} size="sm" />
+                <FormattedMessage id="notification_1" />
+              </h6>
+              <FormattedMessage id="notification_2" />
+            </S.Notification>
+          </S.ImageSelectWrapper>
 
           <S.ButtonWrapper>
-            <S.NextButton
+            <S.PrimaryButton
+              disabled={!imagePreviewURL}
+              onClick={handleTestMyself}
+            >
+              <FormattedMessage id="testMyselfButton" />
+            </S.PrimaryButton>
+            <S.SecondaryButton
               disabled={!imagePreviewURL}
               onClick={openShareRecommendationModal}
             >
-              골라줘~
-            </S.NextButton>
-            <S.ButtonLink href={ROUTE_PATH.choiceColor}>
-              <S.NextButton disabled={!imagePreviewURL}>
-                <FormattedMessage id="nextButton" />
-              </S.NextButton>
-            </S.ButtonLink>
+              <FormattedMessage id="askSomeoneElseButton" />
+            </S.SecondaryButton>
           </S.ButtonWrapper>
         </S.FlexContainer>
       </ModalContainer>

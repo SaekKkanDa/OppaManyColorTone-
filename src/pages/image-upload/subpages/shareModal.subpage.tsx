@@ -6,7 +6,7 @@ import {
   shareInfoModalState,
   shareModalState,
 } from '../imageUpload.atom';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import omctDb from '@Utils/omctDb';
 import { isEmpty, isNil } from '@Base/utils/check';
 
@@ -38,8 +38,8 @@ export default function ShareModalSubPage() {
 const ShareModal = () => {
   const { load, unLoad } = useContextLoading();
   const imageFile = useRecoilValue(imageFileState);
-  const [, setImageName] = useRecoilState(imageNameState);
-  const { isOpen: isOpenShareModal, close: clsoseShareModal } = useModalRecoil({
+  const setImageName = useSetRecoilState(imageNameState);
+  const { isOpen: isOpenShareModal, close: closeShareModal } = useModalRecoil({
     state: shareModalState,
   });
   const { open: openShareInfoModal } = useModalRecoil({
@@ -53,18 +53,39 @@ const ShareModal = () => {
     unLoad();
     console.log(result);
     setImageName(result.name);
-    clsoseShareModal();
+    closeShareModal();
     openShareInfoModal();
   };
 
   return (
-    <Snackbar isOpen={isOpenShareModal} onClose={clsoseShareModal}>
-      <S.ModalText>
-        <FormattedMessage id="shareModal_1" />
-      </S.ModalText>
-      <S.ModalButton onClick={shareImage}>
-        <FormattedMessage id="shareModal_2" />
-      </S.ModalButton>
+    <Snackbar isOpen={isOpenShareModal} onClose={closeShareModal}>
+      <S.PersonalInfoConsentWrapper>
+        <h1>
+          <FormattedMessage id="personalInfoConsentTitle" />
+        </h1>
+        <ul>
+          <li>
+            <FormattedMessage id="personalInfoConsent_1" />
+          </li>
+          <li>
+            <FormattedMessage id="personalInfoConsent_2" />
+          </li>
+          <li>
+            <FormattedMessage id="personalInfoConsent_3" />
+          </li>
+        </ul>
+        <p>
+          <FormattedMessage id="personalInfoConsentGuide" />
+        </p>
+      </S.PersonalInfoConsentWrapper>
+      <S.ModalButtonWrapper>
+        <S.ModalSecondaryButton onClick={closeShareModal}>
+          <FormattedMessage id="disagree" />
+        </S.ModalSecondaryButton>
+        <S.ModalPrimaryButton onClick={shareImage}>
+          <FormattedMessage id="agree" />
+        </S.ModalPrimaryButton>
+      </S.ModalButtonWrapper>
     </Snackbar>
   );
 };
@@ -96,7 +117,7 @@ const ShareInfoModal = () => {
   });
 
   const onClickLinkCopy = async () => {
-    const url = `${location.origin}/${ROUTE_PATH.choiceColor}?imageName=${imageName}`;
+    const url = `${location.origin}${ROUTE_PATH.choiceColor}?imageName=${imageName}`;
     const copyAlertMsg = await copyUrl(url);
     openAlertModal(copyAlertMsg);
   };
