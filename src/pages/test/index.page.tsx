@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useTranslation } from 'next-i18next';
+import { useSetRecoilState } from 'recoil';
 import Spline from '@splinetool/react-spline';
 import { Application } from '@splinetool/runtime';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { useIntersectionObserver } from '@Base/hooks/useIntersectionObserver';
 import { useCountUp } from '@Base/hooks/useCountUp';
-import { CropImage, Locale } from '@Recoil/app';
+import { CropImage } from '@Recoil/app';
 import omctDb from '@Utils/omctDb';
 import { canWebShare, webShare } from '@Utils/share';
 import { copyUrl } from '@Utils/clipboard';
@@ -27,10 +27,11 @@ export default function Home() {
   const [isRunningStartTransition, setIsRunningStartTransition] =
     useState(false);
   const router = useRouter();
-  const intl = useIntl();
 
   const setUserImg = useSetRecoilState(CropImage);
-  const [locale, setLocale] = useRecoilState(Locale);
+
+  const { t, i18n } = useTranslation('common');
+  const currentLocale = i18n.language;
 
   const { ref: topRef } = useIntersectionObserver(
     (entry: IntersectionObserverEntry) => {
@@ -93,11 +94,13 @@ export default function Home() {
   const handleShare = async () => {
     if (canWebShare) return await webShare();
     const messageId = await copyUrl(location.href);
-    alert(intl.messages[messageId]);
+    alert(t(`${messageId}`));
   };
 
-  const handleLocale = () => {
-    setLocale((prev) => (prev === 'en-US' ? 'ko-KR' : 'en-US'));
+  const handleToggleLanguage = () => {
+    router.push(router.pathname, router.asPath, {
+      locale: currentLocale === 'en' ? 'ko-KR' : 'en',
+    });
   };
 
   const onLoadSpline = (app: Application) => {
@@ -108,17 +111,13 @@ export default function Home() {
   return (
     <S.PageWrapper>
       <S.TopPage>
-        <S.LanguageButton onClick={handleLocale}>
-          {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[locale]}
+        <S.LanguageButton onClick={handleToggleLanguage}>
+          {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[currentLocale]}
         </S.LanguageButton>
 
         <S.TitleWrapper ref={topRef}>
-          <S.Title>
-            <FormattedMessage id="landingTitle" />
-          </S.Title>
-          <S.Subtitle>
-            <FormattedMessage id="landingSubTitle" />
-          </S.Subtitle>
+          <S.Title>{t('landingTitle')}</S.Title>
+          <S.Subtitle>{t('landingSubTitle')}</S.Subtitle>
         </S.TitleWrapper>
 
         <Spline
@@ -137,19 +136,19 @@ export default function Home() {
 
       <S.BottomPage>
         <S.UserCountMessage ref={bottomRef} $isInViewBottom={isInViewBottom}>
-          <FormattedMessage id="userCount_1" />
+          {t('userCount_1')}
           <S.UserCountWrapper>
             <S.UserCount>{userCount.toLocaleString()}</S.UserCount>
-            <FormattedMessage id="userCount_2" />
+            {t('userCount_2')}
           </S.UserCountWrapper>
-          <FormattedMessage id="userCount_3" />
+          {t('userCount_3')}
         </S.UserCountMessage>
 
         <S.StartButton
           $isRunningStartTransition={isRunningStartTransition}
           onClick={handleClickStart}
         >
-          <FormattedMessage id="startButton" />
+          {t('startButton')}
         </S.StartButton>
         <S.StartTransition
           $isRunningStartTransition={isRunningStartTransition}
@@ -159,11 +158,11 @@ export default function Home() {
         <S.MiniButtonWrapper $isInViewBottom={isInViewBottom}>
           <S.MiniButton onClick={handleShare}>
             <FontAwesomeIcon icon={faShareNodes} />
-            <FormattedMessage id="shareButton" />
+            {t('shareButton')}
           </S.MiniButton>
           <S.MiniButton onClick={handleViewAllType}>
             <FontAwesomeIcon icon={faSwatchbook} />
-            <FormattedMessage id="viewAllTypesButton" />
+            {t('viewAllTypesButton')}
           </S.MiniButton>
         </S.MiniButtonWrapper>
       </S.BottomPage>
