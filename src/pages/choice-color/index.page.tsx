@@ -15,6 +15,8 @@ import { useRecoilState } from 'recoil';
 import { CropImage } from '@Recoil/app';
 import { withLoadingRouter } from '@Components/WithLoadingRouter/withLoadingRouter';
 import { OnboardingPage } from '@Pages/choice-color/subpages/onboadring.subpage';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 const Page = () => {
   const searchParams = useSearchParams();
@@ -102,5 +104,13 @@ function ChoiceColor() {
     </S.Wrapper>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
 
 export default withLoadingRouter(Page);

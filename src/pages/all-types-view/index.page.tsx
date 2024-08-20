@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import color from '@Data/color';
@@ -43,7 +46,7 @@ const AllTypesView = () => {
       <S.PieChart
         data={color.map(({ type }, index) => {
           return {
-            title: `${type}.name`,
+            title: t(`${type}.name`),
             color:
               hoveredIndex === index || selectedIndex === index
                 ? color[index].textColor
@@ -103,6 +106,14 @@ const AllTypesView = () => {
       )}
     </S.Wrapper>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
 };
 
 export default AllTypesView;

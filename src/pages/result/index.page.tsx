@@ -2,6 +2,9 @@ import { useRef } from 'react';
 import Head from 'next/head';
 import { useTranslation } from 'next-i18next';
 
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import { createConsecutiveNumbers } from '@Base/utils/arrExtension';
 import useScrollTop from '@Base/hooks/useScrollTop';
 
@@ -145,5 +148,13 @@ function ResultPage(): JSX.Element {
     </S.Wrapper>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
 
 export default ResultPage;
