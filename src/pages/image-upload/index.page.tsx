@@ -1,7 +1,8 @@
 import { useRef, useState } from 'react';
-import Link from 'next/link';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
@@ -24,6 +25,8 @@ import useModalRecoil from '@Hooks/useModalRecoil';
 import ShareModalSubPage from './subpages/shareModal.subpage';
 
 function ImageUploadPage() {
+  const { t } = useTranslation('common');
+
   const [imageFile, setImageFile] = useRecoilState(imageFileState);
 
   const {
@@ -75,7 +78,7 @@ function ImageUploadPage() {
             isOpen={!!alertMessage}
             handleClose={() => setAlertMessage('')}
           >
-            <FormattedMessage id={alertMessage} />
+            {t(`${alertMessage}`)}
           </AlertModal>
         )}
 
@@ -116,19 +119,17 @@ function ImageUploadPage() {
           </S.ImageBox>
 
           <S.SelectImgButton onClick={clickInput}>
-            <FormattedMessage id="selectImgButton" />
+            {t('selectImg')}
           </S.SelectImgButton>
-          <S.Guidance>
-            <FormattedMessage id="guidance" />
-          </S.Guidance>
+          <S.Guidance>{t('guidance')}</S.Guidance>
           <S.Notification>
             <h6>
               <FontAwesomeIcon icon={faFaceSmile} size="sm" />
-              <FormattedMessage id="notification_1" />
+              {t('notification_1')}
             </h6>
-            <FormattedMessage id="notification_2" />
+            {t('notification_2')}
             <br />
-            <FormattedMessage id="notification_3" />
+            {t('notification_3')}
           </S.Notification>
 
           <S.ButtonWrapper>
@@ -136,11 +137,11 @@ function ImageUploadPage() {
               disabled={!imagePreviewURL}
               onClick={openShareRecommendationModal}
             >
-              골라줘~
+              {t('otherChooseButton')}
             </S.NextButton>
             <S.ButtonLink href={ROUTE_PATH.choiceColor}>
               <S.NextButton disabled={!imagePreviewURL}>
-                <FormattedMessage id="nextButton" />
+                {t('nextButton')}
               </S.NextButton>
             </S.ButtonLink>
           </S.ButtonWrapper>
@@ -150,5 +151,13 @@ function ImageUploadPage() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
 
 export default ImageUploadPage;

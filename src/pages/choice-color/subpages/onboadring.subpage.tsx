@@ -22,14 +22,14 @@ export const OnboardingPage = () => {
     };
   }, [setIsOnboarding]);
 
-  if (isNil(onBoardingEl)) return;
+  if (isNil(onBoardingEl)) return <></>;
 
   if (isOnboarding) {
     // HJ TODO: z-index enum으로 관리
     onBoardingEl.style.zIndex = '20';
   } else {
     onBoardingEl.style.zIndex = 'unset';
-    return;
+    return <></>;
   }
 
   const { width, height } = onBoardingEl.getBoundingClientRect();

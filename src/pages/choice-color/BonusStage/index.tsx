@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 import getBonusColorOptions from '@Utils/getBonusColorOptions';
 import ROUTE_PATH from '@Constant/routePath';
 import LoadingIndicator from '@Components/LoadingIndicator';
@@ -17,6 +17,8 @@ function BonusStage({ userImg, bonusColorTypes }: BonusStageProps) {
   const router = useRouter();
   const searchParams = router.query as Record<string, string>;
 
+  const { t } = useTranslation('common');
+
   const bonusColorOptions = bonusColorTypes
     ? getBonusColorOptions(bonusColorTypes)
     : null;
@@ -30,9 +32,7 @@ function BonusStage({ userImg, bonusColorTypes }: BonusStageProps) {
   return bonusColorTypes ? (
     <>
       <S.BonusStatusBox />
-      <S.BonusStatusContent>
-        <FormattedMessage id="bonusStatus" />
-      </S.BonusStatusContent>
+      <S.BonusStatusContent>{t('bonusStatus')}</S.BonusStatusContent>
 
       <Guidance />
 

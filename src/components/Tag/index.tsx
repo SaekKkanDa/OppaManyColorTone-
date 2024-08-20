@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 import { Tag } from '@Data/resultColorData';
 import * as S from './style';
 
@@ -8,6 +8,8 @@ interface TagContentProps {
 }
 
 function Tag({ tags, colorType }: TagContentProps) {
+  const { t } = useTranslation('common');
+
   return (
     <S.TagWrapper>
       {tags.map(({ backgroundColor, textColor }, index: number) => (
@@ -16,9 +18,7 @@ function Tag({ tags, colorType }: TagContentProps) {
           backgroundColor={backgroundColor}
           textColor={textColor}
         >
-          <FormattedMessage id={`${colorType}.keyword.${index}`}>
-            {(message) => <span>{`#${message}`}</span>}
-          </FormattedMessage>
+          {t(`${colorType}.keyword.${index}`)}
         </S.Tag>
       ))}
     </S.TagWrapper>

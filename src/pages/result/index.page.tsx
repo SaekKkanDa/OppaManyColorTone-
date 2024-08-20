@@ -1,6 +1,9 @@
 import { useRef } from 'react';
 import Head from 'next/head';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
+
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { createConsecutiveNumbers } from '@Base/utils/arrExtension';
 import useScrollTop from '@Base/hooks/useScrollTop';
@@ -23,6 +26,8 @@ import * as S from './style';
 
 // HJ TODO: 로직과 렌더링 관심 분리
 function ResultPage(): JSX.Element {
+  const { t } = useTranslation('common');
+
   const resultContainerRef = useRef<HTMLDivElement>(null);
 
   useScrollTop();
@@ -40,9 +45,7 @@ function ResultPage(): JSX.Element {
     console.error(error);
     return (
       <S.LoadingWrapper>
-        <S.Title>
-          <FormattedMessage id="errorMsg" />
-        </S.Title>
+        <S.Title>{t('errorMsg')}</S.Title>
         <ColorChipSpinner />
         <RestartButton />
       </S.LoadingWrapper>
@@ -75,9 +78,7 @@ function ResultPage(): JSX.Element {
 
       <S.ResultContainer ref={resultContainerRef}>
         <S.Title>
-          <S.TitleBold color={textColor}>
-            <FormattedMessage id={`${colorType}.name`} />
-          </S.TitleBold>
+          <S.TitleBold color={textColor}>{t(`${colorType}.name`)}</S.TitleBold>
         </S.Title>
 
         <PaletteSubPage colors={gridColors} />
@@ -86,17 +87,15 @@ function ResultPage(): JSX.Element {
 
         <S.Description>
           {createConsecutiveNumbers(5).map((index, number) => (
-            <li key={index}>
-              <FormattedMessage id={`${colorType}.descriptions.${number}`} />
-            </li>
+            <li key={index}>{t(`${colorType}.descriptions.${number}`)}</li>
           ))}
         </S.Description>
 
         <S.SubDescriptionTitle>
           <S.SubDescriptionTitleBold color={textColor}>
-            <FormattedMessage id={`${colorType}.name`} />
+            {t(`${colorType}.name`)}
           </S.SubDescriptionTitleBold>{' '}
-          <FormattedMessage id="celebrities" />
+          {t('celebrities')}
           <S.CelebritiesWrapper>
             {celebrities.map(({ name, imageURL }, idx) => {
               return (
@@ -109,7 +108,7 @@ function ResultPage(): JSX.Element {
                     height={92}
                   />
                   <S.CelebrityName>
-                    <FormattedMessage id={`${colorType}.celebrities.${idx}`} />
+                    {t(`${colorType}.celebrities.${idx}`)}
                   </S.CelebrityName>
                 </S.CelebrityWrapper>
               );
@@ -124,9 +123,9 @@ function ResultPage(): JSX.Element {
               onClick={() => navigateByColorType(type)}
             >
               <S.ColorMatchTitle>
-                <FormattedMessage id={`${title}Title`} />
+                {t(`${title}Title`)}
                 <S.SubDescriptionTitleBold color={textColor}>
-                  <FormattedMessage id={`${colorType}.${title}`} />
+                  {t(`${colorType}.${title}`)}
                 </S.SubDescriptionTitleBold>
               </S.ColorMatchTitle>
               <S.ColorMatchGrid>
@@ -149,5 +148,13 @@ function ResultPage(): JSX.Element {
     </S.Wrapper>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
 
 export default ResultPage;

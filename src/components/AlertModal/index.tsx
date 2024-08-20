@@ -1,4 +1,4 @@
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 import { ModalBackground, Button } from '@Styles/theme';
 import * as S from './style';
 import { ModalBase } from '@Base/components/ModalBase';
@@ -17,6 +17,8 @@ const AlertModal = ({
   textSize = 'md',
   handleClose,
 }: AlertModalProps & React.PropsWithChildren) => {
+  const { t } = useTranslation('common');
+
   return (
     <ModalBase
       isOpen={isOpen}
@@ -24,16 +26,10 @@ const AlertModal = ({
       onClose={handleClose}
     >
       <S.Modal>
-        {title && (
-          <S.Title>
-            <FormattedMessage id={title} />
-          </S.Title>
-        )}
+        {title && <S.Title>{t(`${title}`)}</S.Title>}
         <S.Message $textSize={textSize}>{children}</S.Message>
 
-        <Button onClick={handleClose}>
-          <FormattedMessage id="confirm" />
-        </Button>
+        <Button onClick={handleClose}>{t('confirm')}</Button>
       </S.Modal>
     </ModalBase>
   );
