@@ -99,7 +99,6 @@ function ChoiceColor() {
       ) : (
         <BonusStage userImg={userImg} bonusColorTypes={bonusColorTypes} />
       )}
-      <AdSense data-ad-slot={'2551404503'} />
       <OnboardingPage />
     </S.Wrapper>
   );

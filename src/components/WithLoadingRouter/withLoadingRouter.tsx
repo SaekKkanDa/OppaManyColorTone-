@@ -1,5 +1,6 @@
 import LoadingIndicator from '@Components/LoadingIndicator';
 import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 export const withLoadingRouter = (
   Component: () => JSX.Element,
@@ -7,8 +8,13 @@ export const withLoadingRouter = (
 ) => {
   const RoutedComponent = () => {
     const router = useRouter();
+    const [hasMounted, setHasMounted] = useState(false);
 
-    if (!router.isReady) return fallback;
+    useEffect(() => {
+      setHasMounted(true);
+    }, []);
+
+    if (!router.isReady || !hasMounted) return fallback;
 
     return <Component />;
   };
