@@ -1,7 +1,9 @@
 import { useRef, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserPlus } from '@fortawesome/free-solid-svg-icons';
@@ -25,6 +27,8 @@ import * as S from './style';
 
 function ImageUploadPage() {
   const router = useRouter();
+  const { t } = useTranslation('common');
+
   const [imageFile, setImageFile] = useRecoilState(imageFileState);
 
   const {
@@ -80,7 +84,7 @@ function ImageUploadPage() {
             isOpen={!!alertMessage}
             handleClose={() => setAlertMessage('')}
           >
-            <FormattedMessage id={alertMessage} />
+            {t(`${alertMessage}`)}
           </AlertModal>
         )}
 
@@ -122,17 +126,15 @@ function ImageUploadPage() {
             </S.ImageBox>
 
             <S.SelectImgButton onClick={clickInput}>
-              <FormattedMessage id="selectImgButton" />
+              {t('selectImg')}
             </S.SelectImgButton>
-            <S.Guidance>
-              <FormattedMessage id="guidance" />
-            </S.Guidance>
+            <S.Guidance>{t('guidance')}</S.Guidance>
             <S.Notification>
               <h6>
                 <FontAwesomeIcon icon={faFaceSmile} size="sm" />
-                <FormattedMessage id="notification_1" />
+                {t('notification_1')}
               </h6>
-              <FormattedMessage id="notification_2" />
+              {t('notification_2')}
             </S.Notification>
           </S.ImageSelectWrapper>
 
@@ -141,13 +143,13 @@ function ImageUploadPage() {
               disabled={!imagePreviewURL}
               onClick={handleTestMyself}
             >
-              <FormattedMessage id="testMyselfButton" />
+              {t('testMyselfButton')}
             </S.PrimaryButton>
             <S.SecondaryButton
               disabled={!imagePreviewURL}
               onClick={openShareRecommendationModal}
             >
-              <FormattedMessage id="askSomeoneElseButton" />
+              {t('askSomeoneElseButton')}
             </S.SecondaryButton>
           </S.ButtonWrapper>
         </S.FlexContainer>
@@ -156,5 +158,13 @@ function ImageUploadPage() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
 
 export default ImageUploadPage;

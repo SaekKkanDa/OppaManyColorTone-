@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useTranslation } from 'next-i18next';
+import { useSetRecoilState } from 'recoil';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette, faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import { useCountUp } from '@Base/hooks/useCountUp';
-import { CropImage, Locale } from '@Recoil/app';
+import { CropImage } from '@Recoil/app';
 import ColorChipSpinner from '@Components/ColorChipSpinner';
 import omctDb from '@Utils/omctDb';
 import { canWebShare, webShare } from '@Utils/share';
@@ -15,13 +15,16 @@ import { copyUrl } from '@Utils/clipboard';
 import questionBubble from 'public/images/icon/question-bubble.png';
 import * as S from './style';
 
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 function LandingPage() {
+  const { t, i18n } = useTranslation('common');
+
   const [numberOfUsers, setNumberOfUsers] = useState(0);
   const router = useRouter();
-  const intl = useIntl();
 
   const setUserImg = useSetRecoilState(CropImage);
-  const [locale, setLocale] = useRecoilState(Locale);
 
   useEffect(() => {
     const getNumberOfUsers = async () => {
@@ -49,11 +52,15 @@ function LandingPage() {
   const handleShare = async () => {
     if (canWebShare) return await webShare();
     const messageId = await copyUrl(location.href);
-    alert(intl.messages[messageId]);
+    alert(t(`${messageId}`));
   };
 
-  const handleLocale = () => {
-    setLocale((prev) => (prev === 'en-US' ? 'ko-KR' : 'en-US'));
+  const currentLocale = i18n.language;
+
+  const toggleLocale = currentLocale === 'en' ? 'ko-KR' : 'en';
+
+  const handleToggleLanguage = () => {
+    router.push(router.pathname, router.asPath, { locale: toggleLocale });
   };
 
   return (
@@ -61,15 +68,11 @@ function LandingPage() {
       <S.LandingWrap>
         <S.LandingTitleDiv>
           <S.LandingTitle>
-            <FormattedMessage id="landingTitle_1" />{' '}
-            <S.TitleHighlight>
-              <FormattedMessage id="titleHighlight" />
-            </S.TitleHighlight>{' '}
-            <FormattedMessage id="landingTitle_2" />
+            {t('landingTitle_1')}{' '}
+            <S.TitleHighlight>{t('titleHighlight')}</S.TitleHighlight>{' '}
+            {t('landingTitle_2')}
           </S.LandingTitle>
-          <S.LandingSubTitle>
-            <FormattedMessage id="landingSubTitle" />
-          </S.LandingSubTitle>
+          <S.LandingSubTitle>{t('landingSubTitle')}</S.LandingSubTitle>
         </S.LandingTitleDiv>
 
         <S.SpinnerWrapper>
@@ -86,21 +89,20 @@ function LandingPage() {
 
         <S.LandingBottomDiv>
           <S.UserCount>
-            <FormattedMessage id="userCount_1" /> {count.toLocaleString()}
-            <FormattedMessage id="userCount_2" />{' '}
-            <FormattedMessage id="userCount_3" />
+            {t('userCount_1')} {count.toLocaleString()} {t('userCount_2')}
+            {t('userCount_3')}
           </S.UserCount>
 
           <S.StartButton onClick={onClickStartButton}>
-            <FormattedMessage id="startButton" />
+            {t('startButton')}
           </S.StartButton>
 
           <S.MiniButtonWrapper>
             <S.MiniButton onClick={handleViewAllType}>
               <FontAwesomeIcon icon={faPalette} />
             </S.MiniButton>
-            <S.MiniButton onClick={handleLocale}>
-              {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[locale]}
+            <S.MiniButton onClick={handleToggleLanguage}>
+              {{ 'ko-KR': 'ENG', en: '한국어' }[currentLocale]}
             </S.MiniButton>
             <S.MiniButton onClick={handleShare}>
               <FontAwesomeIcon icon={faShareNodes} />
@@ -111,5 +113,13 @@ function LandingPage() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
 
 export default LandingPage;

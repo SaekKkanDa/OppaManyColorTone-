@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 import type { ChoiceColorDataType } from '@Data/choiceColorData';
 import Guidance from '../Guidance';
 
@@ -26,6 +26,8 @@ function BasicStage({
   selectedColor,
   onBasicClick,
 }: BasicStageProps) {
+  const { t } = useTranslation('common');
+
   // HJ TODO: 더 좋은 방법이 있을 것 같음...
   const colorBoxElRef = useRef<HTMLDivElement>(null);
   const setOnboardingEl = useSetRecoilState(onboardingElState);
@@ -42,7 +44,7 @@ function BasicStage({
           <S.StatusBar width={`${(stageNum + 1) * (100 / MAX_STAGE_NUM)}%`} />
         </S.StatusBox>
         <S.StatusContent>
-          {stageNum + 1}/{MAX_STAGE_NUM} <FormattedMessage id="statusContent" />
+          {stageNum + 1}/{MAX_STAGE_NUM} {t('statusContent')}
         </S.StatusContent>
       </S.StatusWrapper>
 

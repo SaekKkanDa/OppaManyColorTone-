@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleQuestion } from '@fortawesome/free-solid-svg-icons';
 import AlertModal from '@Components/AlertModal';
@@ -7,6 +7,8 @@ import AlertModal from '@Components/AlertModal';
 import * as S from './style';
 
 function Guidance() {
+  const { t } = useTranslation('common');
+
   const [isOpenGuideModal, setIsOpenGuideModal] = useState(false);
 
   const handleOpenGuideModal = () => {
@@ -16,15 +18,15 @@ function Guidance() {
   return (
     <S.Guidance>
       <S.MainGuide>
-        <FormattedMessage id="explanation_1" />
+        {t('explanation_1')}
         <S.MoreGuideButton onClick={handleOpenGuideModal}>
           <FontAwesomeIcon icon={faCircleQuestion} />
         </S.MoreGuideButton>
       </S.MainGuide>
       <S.SubGuide>
-        <FormattedMessage id="explanation_2" />
+        {t('explanation_2')}
         <br />
-        <FormattedMessage id="explanation_3" />
+        {t('explanation_3')}
       </S.SubGuide>
 
       {isOpenGuideModal && (
@@ -40,9 +42,7 @@ function Guidance() {
               'colorChoiceGuideExplanation_2',
               'colorChoiceGuideExplanation_3',
             ].map((messageId) => (
-              <p key={messageId}>
-                <FormattedMessage id={messageId} />
-              </p>
+              <p key={messageId}>{t(`${messageId}`)}</p>
             ))}
           </S.ColorChoiceGuideWrapper>
         </AlertModal>

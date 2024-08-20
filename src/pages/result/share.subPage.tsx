@@ -1,6 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 
 import { isEmpty, isNil } from '@Base/utils/check';
 import AlertModal from '@Components/AlertModal';
@@ -25,6 +25,7 @@ interface MenuSubPageProps {
 
 function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
   const router = useRouter();
+  const { t } = useTranslation('common');
 
   // alert modal
   const {
@@ -87,48 +88,40 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
           <S.MenuItemButton onClick={onClickCapture}>
             <IconDownload />
           </S.MenuItemButton>
-          <S.MenuItemName>
-            <FormattedMessage id="saveResult" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('saveResult')}</S.MenuItemName>
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
           <S.MenuItemButton onClick={onClickLinkCopy}>
             <IconCopy />
           </S.MenuItemButton>
-          <S.MenuItemName>
-            <FormattedMessage id="copyUrl" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('copyUrl')}</S.MenuItemName>
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
           <S.KakaoShareButton onClick={kakaoShare}>
             <IconKakao width={48} height={48} />
           </S.KakaoShareButton>
-          <S.MenuItemName>
-            <FormattedMessage id="kakaotalk" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('kakaotalk')}</S.MenuItemName>
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
           <S.MenuItemButton onClick={webShare}>
             <IconShare />
           </S.MenuItemButton>
-          <S.MenuItemName>
-            <FormattedMessage id="shareResult" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('shareResult')}</S.MenuItemName>
         </S.MenuItemWrapper>
       </S.MenuContainer>
 
       <S.ButtonWrapper>
         <RestartButton />
         <S.AllTypesButton onClick={handleGoToAllTypesView}>
-          <FormattedMessage id="viewAllTypesButton" />
+          {t('viewAllTypesButton')}
         </S.AllTypesButton>
       </S.ButtonWrapper>
       {isOpenAlertModal && !isEmpty(alertModalMessage) && (
         <AlertModal isOpen={isOpenAlertModal} handleClose={closeAlertModal}>
-          <FormattedMessage id={alertModalMessage} />
+          {t(`${alertModalMessage}`)}
         </AlertModal>
       )}
     </>

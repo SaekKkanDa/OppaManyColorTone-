@@ -11,7 +11,7 @@
   "shareButton": "공유하기",
   "viewAllTypesButton": "컬러 유형 전체보기",
   "startButton": "시작하기",
-  "selectImgButton": "사진 선택",
+  "selectImg": "사진 선택",
   "guidance": "실제와 비슷한 톤의 얼굴 사진을 선택해주세요.",
   "notification_1": "안심하세요!",
   "notification_2": "자가진단(직접 진단하기) 서비스는 사용자의 사진을 수집하지 않으며, 사진은 진단 외 다른 목적으로 이용되지 않습니다.",

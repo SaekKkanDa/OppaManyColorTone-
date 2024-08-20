@@ -1,20 +1,19 @@
 import { onboardingState } from '@Pages/choice-color/choiceColor.atom';
 import { BorderedButton, flexCustom } from '@Styles/theme';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'react-i18next';
 import { useRecoilState } from 'recoil';
 import styled from 'styled-components';
 
 // HJ TODO: base component로 구현
 export const Tooltip = () => {
+  const { t } = useTranslation();
   const [, setIsOnboarding] = useRecoilState(onboardingState);
 
   return (
     <STooltipContainer>
-      <SParagraphy>
-        <FormattedMessage id="onboarding1" />
-      </SParagraphy>
+      <SParagraphy>{t('onboarding1')}</SParagraphy>
       <SButton onClick={() => setIsOnboarding(false)}>
-        <FormattedMessage id="onboarding-confirm" />
+        {t('onboarding-confirm')}
       </SButton>
       <STooltipArrow />
     </STooltipContainer>

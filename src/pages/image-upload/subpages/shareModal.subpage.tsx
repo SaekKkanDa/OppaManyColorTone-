@@ -13,7 +13,6 @@ import { isEmpty, isNil } from '@Base/utils/check';
 import * as S from '../style';
 import useContextLoading from '@Hooks/useContextLoading';
 import { OmctConsole } from '@Utils/console';
-import { FormattedMessage } from 'react-intl';
 import { IconShare } from '@Components/Icon/IconShare';
 import { IconCopy } from '@Components/Icon/IconCopy';
 import AlertModal from '@Components/AlertModal';
@@ -23,6 +22,7 @@ import { EOmctErrorNo } from '@Constant/errorKeyValue';
 import { copyUrl } from '@Utils/clipboard';
 
 import ROUTE_PATH from '@Constant/routePath';
+import { useTranslation } from 'react-i18next';
 
 const console = new OmctConsole('ShareModalSubPage');
 
@@ -36,6 +36,8 @@ export default function ShareModalSubPage() {
 }
 
 const ShareModal = () => {
+  const { t } = useTranslation();
+
   const { load, unLoad } = useContextLoading();
   const imageFile = useRecoilValue(imageFileState);
   const setImageName = useSetRecoilState(imageNameState);
@@ -60,30 +62,20 @@ const ShareModal = () => {
   return (
     <Snackbar isOpen={isOpenShareModal} onClose={closeShareModal}>
       <S.PersonalInfoConsentWrapper>
-        <h1>
-          <FormattedMessage id="personalInfoConsentTitle" />
-        </h1>
+        <h1>{t('personalInfoConsentTitle')}</h1>
         <ul>
-          <li>
-            <FormattedMessage id="personalInfoConsent_1" />
-          </li>
-          <li>
-            <FormattedMessage id="personalInfoConsent_2" />
-          </li>
-          <li>
-            <FormattedMessage id="personalInfoConsent_3" />
-          </li>
+          <li>{t('personalInfoConsent_1')}</li>
+          <li>{t('personalInfoConsent_2')}</li>
+          <li>{t('personalInfoConsent_3')}</li>
         </ul>
-        <p>
-          <FormattedMessage id="personalInfoConsentGuide" />
-        </p>
+        <p>{t('personalInfoConsentGuide')}</p>
       </S.PersonalInfoConsentWrapper>
       <S.ModalButtonWrapper>
         <S.ModalSecondaryButton onClick={closeShareModal}>
-          <FormattedMessage id="disagree" />
+          {t('disagree')}
         </S.ModalSecondaryButton>
         <S.ModalPrimaryButton onClick={shareImage}>
-          <FormattedMessage id="agree" />
+          {t('agree')}
         </S.ModalPrimaryButton>
       </S.ModalButtonWrapper>
     </Snackbar>
@@ -91,6 +83,8 @@ const ShareModal = () => {
 };
 
 const ShareInfoModal = () => {
+  const { t } = useTranslation();
+
   const { isOpen: isOpenShareInfoModal, close: closeShareInfoModal } =
     useModalRecoil({ state: shareInfoModalState });
 
@@ -126,33 +120,27 @@ const ShareInfoModal = () => {
     <>
       {/* HJ TODO: result 페이지와 중복되는 코드 */}
       <Snackbar isOpen={isOpenShareInfoModal} onClose={closeShareInfoModal}>
-        <S.ModalText>
-          <FormattedMessage id="shareModal_3" />
-        </S.ModalText>
+        <S.ModalText>{t('shareModal_3')}</S.ModalText>
         <S.MenuContainer>
           <S.MenuItemWrapper>
             <S.MenuItemButton onClick={onClickLinkCopy}>
               <IconCopy />
             </S.MenuItemButton>
-            <S.MenuItemName>
-              <FormattedMessage id="copyUrl" />
-            </S.MenuItemName>
+            <S.MenuItemName>{t('copyUrl')}</S.MenuItemName>
           </S.MenuItemWrapper>
 
           <S.MenuItemWrapper>
             <S.MenuItemButton onClick={webShare}>
               <IconShare />
             </S.MenuItemButton>
-            <S.MenuItemName>
-              <FormattedMessage id="shareResult" />
-            </S.MenuItemName>
+            <S.MenuItemName>{t('shareResult')}</S.MenuItemName>
           </S.MenuItemWrapper>
         </S.MenuContainer>
       </Snackbar>
       {/* HJ TODO: global하게 관리하는 것 or 일일이 작성하는 것 */}
       {isOpenAlertModal && !isEmpty(alertModalMessage) && (
         <AlertModal isOpen={isOpenAlertModal} handleClose={closeAlertModal}>
-          <FormattedMessage id={alertModalMessage} />
+          {t(alertModalMessage)}
         </AlertModal>
       )}
     </>
