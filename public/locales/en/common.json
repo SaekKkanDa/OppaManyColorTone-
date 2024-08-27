@@ -230,6 +230,10 @@
   "shareModal_1": "How about letting your friend choose instead?",
   "shareModal_2": "Choose for you",
   "shareModal_3": "Share!",
+  "myTestUrlCreated": "Your own test link has been created!",
+  "myTestShareGuide": "Share your link and ask others to take your personal color test.",
+  "myTestUrl": "Your Personal Color Test Link",
+  "shareMyTestUrl": "Share My Test",
   "onboarding1": "Among the four cards, choose a card\nthat looks best on you.",
   "onboarding-confirm": "Confirm"
 }

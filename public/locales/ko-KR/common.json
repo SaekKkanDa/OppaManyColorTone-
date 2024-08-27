@@ -230,6 +230,10 @@
   "shareModal_1": "동의하십니까?",
   "shareModal_2": "대신 선택 요청하기?",
   "shareModal_3": "원하는 방법으로 전송하세요",
+  "myTestUrlCreated": "나만의 진단 링크가 생성되었어요!",
+  "myTestShareGuide": "링크를 공유하고 다른 사람들에게 내 퍼스널 컬러 진단을 요청해 보세요.",
+  "myTestUrl": "내 퍼스널 컬러 진단 링크",
+  "shareMyTestUrl": "내 진단 공유하기",
   "onboarding1": "4개의 카드 중 얼굴과 잘 어울리는\n카드를 선택해주세요",
   "onboarding-confirm": "확인"
 }
