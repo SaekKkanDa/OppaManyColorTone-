@@ -1,5 +1,5 @@
 import React from 'react';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useTranslation } from 'next-i18next';
 
 import { isEmpty, isNil } from '@Base/utils/check';
@@ -24,6 +24,7 @@ interface MenuSubPageProps {
 }
 
 function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
+  const router = useRouter();
   const { t } = useTranslation('common');
 
   // alert modal
@@ -76,6 +77,10 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
     openAlertModal(copyAlertMsg);
   };
 
+  const handleGoToAllTypesView = () => {
+    router.push(ROUTE_PATH.allTypesView);
+  };
+
   return (
     <>
       <S.MenuContainer>
@@ -108,12 +113,12 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
         </S.MenuItemWrapper>
       </S.MenuContainer>
 
-      <S.ButtonsWrapper>
-        <Link href={ROUTE_PATH.allTypesView}>
-          <S.AllTypesButton>{t('allTypes')}</S.AllTypesButton>
-        </Link>
+      <S.ButtonWrapper>
         <RestartButton />
-      </S.ButtonsWrapper>
+        <S.AllTypesButton onClick={handleGoToAllTypesView}>
+          {t('viewAllTypesButton')}
+        </S.AllTypesButton>
+      </S.ButtonWrapper>
       {isOpenAlertModal && !isEmpty(alertModalMessage) && (
         <AlertModal isOpen={isOpenAlertModal} handleClose={closeAlertModal}>
           {t(`${alertModalMessage}`)}

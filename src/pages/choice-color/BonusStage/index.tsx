@@ -11,9 +11,14 @@ import * as S from './style';
 interface BonusStageProps {
   userImg: string;
   bonusColorTypes: string[] | null;
+  selectedColor: string;
 }
 
-function BonusStage({ userImg, bonusColorTypes }: BonusStageProps) {
+function BonusStage({
+  userImg,
+  bonusColorTypes,
+  selectedColor,
+}: BonusStageProps) {
   const router = useRouter();
   const searchParams = router.query as Record<string, string>;
 
@@ -31,8 +36,10 @@ function BonusStage({ userImg, bonusColorTypes }: BonusStageProps) {
 
   return bonusColorTypes ? (
     <>
-      <S.BonusStatusBox />
-      <S.BonusStatusContent>{t('bonusStatus')}</S.BonusStatusContent>
+      <S.StatusWrapper>
+        <S.BonusStatusBox />
+        <S.BonusStatusContent>{t('bonusStatus')}</S.BonusStatusContent>
+      </S.StatusWrapper>
 
       <Guidance />
 
@@ -41,6 +48,7 @@ function BonusStage({ userImg, bonusColorTypes }: BonusStageProps) {
           <S.BonusColor
             key={type + index}
             colors={colors}
+            isSelected={colors.includes(selectedColor)}
             onClick={() => onBonusClick(type)}
           >
             <Image src={userImg} alt="사용자 이미지" width={100} height={100} />

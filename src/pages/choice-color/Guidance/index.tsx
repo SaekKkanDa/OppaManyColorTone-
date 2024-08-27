@@ -17,14 +17,23 @@ function Guidance() {
 
   return (
     <S.Guidance>
-      {t('explanation_1')}
-      <button onClick={handleOpenGuideModal}>
-        <FontAwesomeIcon icon={faCircleQuestion} />
-      </button>
+      <S.MainGuide>
+        {t('explanation_1')}
+        <S.MoreGuideButton onClick={handleOpenGuideModal}>
+          <FontAwesomeIcon icon={faCircleQuestion} />
+        </S.MoreGuideButton>
+      </S.MainGuide>
+      <S.SubGuide>
+        {t('explanation_2')}
+        <br />
+        {t('explanation_3')}
+      </S.SubGuide>
+
       {isOpenGuideModal && (
         <AlertModal
           isOpen={isOpenGuideModal}
           title="colorChoiceGuideTitle"
+          textSize="sm"
           handleClose={() => setIsOpenGuideModal(false)}
         >
           <S.ColorChoiceGuideWrapper>
@@ -38,11 +47,6 @@ function Guidance() {
           </S.ColorChoiceGuideWrapper>
         </AlertModal>
       )}
-      <S.Explanation>
-        {t('explanation_2')}
-        <br />
-        {t('explanation_3')}
-      </S.Explanation>
     </S.Guidance>
   );
 }

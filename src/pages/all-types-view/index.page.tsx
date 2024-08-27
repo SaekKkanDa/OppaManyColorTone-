@@ -84,7 +84,7 @@ const AllTypesView = () => {
       />
 
       {colorType ? (
-        <>
+        <S.ColorTypeWrapper>
           <S.ColorTypeTitle color={color[selectedIndex].textColor}>
             {t(`${colorType}.name`)}
           </S.ColorTypeTitle>
@@ -100,7 +100,7 @@ const AllTypesView = () => {
               )
             )}
           </S.PaletteGrid>
-        </>
+        </S.ColorTypeWrapper>
       ) : (
         <S.Description>{t('clickType')}</S.Description>
       )}

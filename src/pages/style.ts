@@ -1,12 +1,9 @@
 import styled from 'styled-components';
-import { Button, flexCustom } from '@Styles/theme';
+import { Button, flexCustom, layout } from '@Styles/theme';
 
 export const LandingWrap = styled.div`
-  ${flexCustom('column')}
-  margin: 0 auto;
-  padding: 48px 0 36px;
-  max-width: var(--viewport-max-width);
-  height: 100%;
+  ${layout}
+  ${flexCustom('column', 'center', 'center')}
   background-color: ${({ theme }) => theme.gray[100]};
 `;
 
@@ -18,7 +15,6 @@ export const LandingTitleDiv = styled.div`
 export const LandingTitle = styled.h1`
   color: ${({ theme }) => theme.gray[300]};
   font-size: 2.5rem;
-  font-weight: 700;
   text-align: center;
   letter-spacing: -0.02em;
 `;
@@ -29,7 +25,6 @@ export const TitleHighlight = styled.span`
 
 export const LandingSubTitle = styled.h2`
   font-size: 1.5rem;
-  font-weight: 700;
   margin-top: 0.5rem;
   text-align: center;
 `;
@@ -110,7 +105,8 @@ export const QuestionMark = styled.div`
 `;
 
 export const LandingBottomDiv = styled.div`
-  ${flexCustom('column')}
+  ${flexCustom('column', 'center', 'center')}
+  width: 100%;
 `;
 
 export const UserCount = styled.div`
@@ -130,10 +126,9 @@ export const MiniButtonWrapper = styled.div`
   margin-top: 16px;
 `;
 
-export const MiniButton = styled.button<{ $type: 'icon' | 'text' }>`
+export const MiniButton = styled.button`
   ${flexCustom('column', 'center', 'center')}
-  padding: ${({ $type }) =>
-    $type === 'text' ? '0.5875rem 0.5rem 0.4125rem' : '0.5rem'};
+  padding:0.5rem;
   border: 1px solid ${({ theme }) => theme.gray[500]};
   border-radius: 1.5rem;
   color: ${({ theme }) => theme.gray[500]};

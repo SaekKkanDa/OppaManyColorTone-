@@ -1,7 +1,7 @@
+import { useCallback } from 'react';
 import { EOmctErrorNo } from '@Constant/errorKeyValue';
 import { canWebShare, webShare } from '@Utils/share';
 import { isChrome, isKakao, isOSX } from '@Utils/userAgent';
-import { useCallback } from 'react';
 
 interface Props {
   onSuccess?: () => void;

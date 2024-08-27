@@ -4,7 +4,7 @@ import type { ChoiceColorDataType } from '@Data/choiceColorData';
 import Guidance from '../Guidance';
 
 import * as S from './style';
-import { useRecoilState } from 'recoil';
+import { useSetRecoilState } from 'recoil';
 import { onboardingElState } from '@Pages/choice-color/choiceColor.atom';
 import { useEffect, useRef } from 'react';
 import { isNotNil } from '@Base/utils/check';
@@ -30,7 +30,7 @@ function BasicStage({
 
   // HJ TODO: 더 좋은 방법이 있을 것 같음...
   const colorBoxElRef = useRef<HTMLDivElement>(null);
-  const [, setOnboardingEl] = useRecoilState(onboardingElState);
+  const setOnboardingEl = useSetRecoilState(onboardingElState);
 
   useEffect(() => {
     const colorBoxEl = colorBoxElRef.current;
@@ -39,12 +39,14 @@ function BasicStage({
 
   return (
     <>
-      <S.StatusBox>
-        <S.StatusBar width={`${(stageNum + 1) * (100 / MAX_STAGE_NUM)}%`} />
-      </S.StatusBox>
-      <S.StatusContent>
-        {stageNum + 1}/{MAX_STAGE_NUM} {t('statusContent')}
-      </S.StatusContent>
+      <S.StatusWrapper>
+        <S.StatusBox>
+          <S.StatusBar width={`${(stageNum + 1) * (100 / MAX_STAGE_NUM)}%`} />
+        </S.StatusBox>
+        <S.StatusContent>
+          {stageNum + 1}/{MAX_STAGE_NUM} {t('statusContent')}
+        </S.StatusContent>
+      </S.StatusWrapper>
 
       <Guidance />
 

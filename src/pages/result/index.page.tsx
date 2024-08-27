@@ -77,30 +77,31 @@ function ResultPage(): JSX.Element {
       </Head>
 
       <S.ResultContainer ref={resultContainerRef}>
-        <S.Title>
-          <S.TitleBold color={textColor}>{t(`${colorType}.name`)}</S.TitleBold>
-        </S.Title>
+        <S.MainWrapper>
+          <S.Title color={textColor}>{t(`${colorType}.name`)}</S.Title>
 
-        <PaletteSubPage colors={gridColors} />
+          <PaletteSubPage colors={gridColors} />
 
-        <Tag tags={tags} colorType={colorType} />
+          <Tag tags={tags} colorType={colorType} />
+          <S.Description>
+            {createConsecutiveNumbers(5).map((index, number) => (
+              <li key={index}>{t(`${colorType}.descriptions.${number}`)}</li>
+            ))}
+          </S.Description>
+        </S.MainWrapper>
 
-        <S.Description>
-          {createConsecutiveNumbers(5).map((index, number) => (
-            <li key={index}>{t(`${colorType}.descriptions.${number}`)}</li>
-          ))}
-        </S.Description>
-
-        <S.SubDescriptionTitle>
-          <S.SubDescriptionTitleBold color={textColor}>
-            {t(`${colorType}.name`)}
-          </S.SubDescriptionTitleBold>{' '}
-          {t('celebrities')}
+        <S.SubDescriptionWrapper>
+          <S.SubDescriptionTitle>
+            <S.SubDescriptionTitleHighlighted color={textColor}>
+              {t(`${colorType}.name`)}
+            </S.SubDescriptionTitleHighlighted>
+            {t('celebrities')}
+          </S.SubDescriptionTitle>
           <S.CelebritiesWrapper>
             {celebrities.map(({ name, imageURL }, idx) => {
               return (
                 <S.CelebrityWrapper key={name + idx}>
-                  <S.Styling
+                  <S.CelebrityImage
                     key={name}
                     src={imageURL}
                     alt="연예인"
@@ -114,7 +115,7 @@ function ResultPage(): JSX.Element {
               );
             })}
           </S.CelebritiesWrapper>
-        </S.SubDescriptionTitle>
+        </S.SubDescriptionWrapper>
 
         {[secondaryColor, worstColor].map(
           ({ title, type, name, textColor, bestColors }) => (
@@ -122,12 +123,12 @@ function ResultPage(): JSX.Element {
               key={name}
               onClick={() => navigateByColorType(type)}
             >
-              <S.ColorMatchTitle>
+              <S.SubDescriptionTitle>
                 {t(`${title}Title`)}
-                <S.SubDescriptionTitleBold color={textColor}>
+                <S.SubDescriptionTitleHighlighted color={textColor}>
                   {t(`${colorType}.${title}`)}
-                </S.SubDescriptionTitleBold>
-              </S.ColorMatchTitle>
+                </S.SubDescriptionTitleHighlighted>
+              </S.SubDescriptionTitle>
               <S.ColorMatchGrid>
                 {bestColors.map((color, idx) => (
                   <S.ColorMatchGridItem

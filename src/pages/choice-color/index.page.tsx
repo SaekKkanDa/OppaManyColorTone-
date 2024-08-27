@@ -97,7 +97,11 @@ function ChoiceColor() {
           onBasicClick={onBasicClick}
         />
       ) : (
-        <BonusStage userImg={userImg} bonusColorTypes={bonusColorTypes} />
+        <BonusStage
+          userImg={userImg}
+          bonusColorTypes={bonusColorTypes}
+          selectedColor={selectedColor}
+        />
       )}
       <OnboardingPage />
     </S.Wrapper>

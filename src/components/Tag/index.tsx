@@ -1,9 +1,9 @@
 import { useTranslation } from 'next-i18next';
-import { Tag } from '@Data/resultColorData';
+import { Tag as TagType } from '@Data/resultColorData';
 import * as S from './style';
 
 interface TagContentProps {
-  tags: Tag[];
+  tags: TagType[];
   colorType: ColorType;
 }
 

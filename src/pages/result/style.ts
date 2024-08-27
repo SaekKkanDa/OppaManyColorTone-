@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styled, { keyframes } from 'styled-components';
-import { Button, flexCustom } from '@Styles/theme';
+import { BorderedButton, flexCustom } from '@Styles/theme';
 import checkIcon from 'public/images/icon/check.png';
 
 interface ColorItemStyleProps {
@@ -9,70 +9,73 @@ interface ColorItemStyleProps {
 
 export const Wrapper = styled.div`
   ${flexCustom('column', 'inherit', 'flex-start')}
-  margin: 0 auto;
-  max-width: var(--viewport-max-width);
+  width: 100%;
+`;
+
+export const MainWrapper = styled.div`
+  ${flexCustom('column', 'center', 'flex-start')}
+  row-gap: 1.5rem;
 `;
 
 export const ResultContainer = styled.div`
   ${flexCustom('column', 'inherit', 'flex-start')}
-  padding: 48px 32px 36px;
+  row-gap: 2.5rem;
+  padding: 2rem 1.5rem;
 `;
 
 export const LoadingWrapper = styled.div`
   ${flexCustom('column', 'center', 'center')}
-  row-gap: 40px;
   max-width: var(--viewport-max-width);
   margin: 0 auto;
-  padding: 48px 32px 30px 36px;
 `;
 
 export const Title = styled.h1`
-  ${flexCustom('column', 'center', 'center')}
-  row-gap: 16px;
-  font-size: min(4.5vw, 18px);
-  font-weight: 700;
+  color: ${({ color }) => color};
+  font-size: ${({ theme }) => theme.font.size['2xl']};
   text-align: center;
-`;
-
-export const TitleBold = styled.span`
-  font-size: min(7.5vw, 30px);
-  color: ${(props) => props.color};
 `;
 
 export const Description = styled.ul`
   ${flexCustom('column', 'flex-start', 'flex-start')}
   row-gap: 0.5em;
-  margin-top: 24px;
   font-size: 14px;
-  line-height: 24px;
   text-align: justify;
+  color: ${({ theme }) => theme.gray[700]};
   letter-spacing: -0.02em;
 
   li {
-    padding-left: 16px;
-    background: url(${checkIcon.src}) 0 0.6em / 10px 10px no-repeat;
+    padding-left: 1rem;
+    background: url(${checkIcon.src}) 0 0.4em / 10px 10px no-repeat;
   }
 `;
 
-export const ColorMatchButton = styled.button`
-  margin-top: 48px;
-  cursor: pointer;
+export const SubDescriptionWrapper = styled.div`
+  ${flexCustom('column', 'initial', 'initial')}
+  row-gap: 1rem;
 `;
 
-export const ColorMatchTitle = styled.h2`
-  ${flexCustom('row', 'baseline', 'flex-start')}
-  column-gap: 12px;
-  font-weight: 700;
-  font-size: min(5.25vw, 21px);
+export const SubDescriptionTitle = styled.h2`
+  ${flexCustom('row', 'baseline', 'start')}
+  column-gap: 0.5rem;
+  font-size: ${({ theme }) => theme.font.size.xl};
+  color: ${({ theme }) => theme.gray[900]};
+`;
+
+export const SubDescriptionTitleHighlighted = styled.span`
+  font-size: ${({ theme }) => theme.font.size['1.5xl']};
+  color: ${({ color }) => color};
+`;
+
+export const ColorMatchButton = styled.button`
+  ${flexCustom('column', 'initial', 'initial')}
+  row-gap: 1rem;
 `;
 
 export const ColorMatchGrid = styled.div`
   display: grid;
-  margin-top: 12px;
   grid-template-columns: repeat(8, 1fr);
   grid-template-rows: repeat(2, 1fr);
-  gap: 5px;
-
+  gap: 6px;
   width: 100%;
 `;
 
@@ -82,51 +85,31 @@ export const ColorMatchGridItem = styled.div<ColorItemStyleProps>`
   background-color: ${(props) => props.backgroundColor};
 `;
 
-export const SubDescriptionTitle = styled.h2`
-  margin-top: 48px;
-  font-size: min(5.25vw, 21px);
-  font-weight: 700;
-`;
-
-export const SubDescriptionTitleBold = styled.span`
-  color: ${(props) => props.color};
-`;
-
-export const Styling = styled(Image)`
-  width: 92px;
-  height: 92px;
-`;
-
-export const StylingWrapper = styled.div`
-  ${flexCustom('column', 'center', 'center')};
-  margin: 12px auto 0;
-  width: min(64.25vw, 257px);
-  padding-top: 20px;
-`;
-
 export const CelebritiesWrapper = styled.div`
-  ${flexCustom('row', 'inherit', 'space-between')};
-  margin-top: 20px;
+  ${flexCustom('row', 'inherit', 'space-around')};
 `;
 
 export const CelebrityWrapper = styled.div`
   ${flexCustom('column', 'inherit', 'inherit')};
 `;
 
+export const CelebrityImage = styled(Image)`
+  width: 92px;
+  height: 92px;
+`;
+
 export const CelebrityName = styled.div`
-  margin-top: 8px;
+  margin-top: 0.5rem;
   color: ${({ theme }) => theme.gray[600]};
-  font-size: 14px;
-  text-align: center;
+  font-size: ${({ theme }) => theme.font.size.sm};
   font-weight: 500;
-  font-family: 'Noto Sans KR', sans-serif;
+  text-align: center;
 `;
 
 // palette
 export const PaletteWrapper = styled.div`
   position: relative;
   ${flexCustom('row', 'flex-start', 'center')}
-  margin: 24px auto 0 auto;
   width: 100%;
   aspect-ratio: 1/1;
 `;
@@ -142,13 +125,14 @@ export const InteractionInfo = styled.div`
   top: 15px;
   animation: ${blink} 1.5s linear infinite;
   color: white;
-  font-size: 0.9rem;
+  font-size: ${({ theme }) => theme.font.size.sm};
 `;
 
 // share
 export const MenuContainer = styled.div`
-  ${flexCustom('row', 'inherit', 'space-around')}
-  padding: 36px 32px;
+  ${flexCustom('row', 'center', 'center')}
+  column-gap: 1.5rem;
+  padding: 1.5rem 0;
 `;
 
 export const MenuItemWrapper = styled.div`
@@ -185,24 +169,15 @@ export const MenuItemImg = styled(Image)`
 `;
 
 export const MenuItemName = styled.div`
-  margin-top: 4px;
+  margin-top: 0.25rem;
   text-align: center;
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.font.size.xs};
 `;
 
-export const ButtonsWrapper = styled.div`
-  ${flexCustom('row', 'center', 'center')}
-  column-gap: 12px;
-  padding: 0 32px 36px;
-
-  button,
-  a {
-    flex: 1 1 0;
-    width: 100%;
-    font-size: 20px;
-  }
+export const ButtonWrapper = styled.div`
+  ${flexCustom('column', 'center', 'center')}
+  row-gap: 0.5rem;
+  padding: 2rem 1.5rem;
 `;
 
-export const AllTypesButton = styled(Button)`
-  border: 2px solid ${({ theme }) => theme.gray[800]};
-`;
+export const AllTypesButton = BorderedButton;
