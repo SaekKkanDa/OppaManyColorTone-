@@ -17,6 +17,8 @@ import * as S from './style';
 
 import { GetServerSideProps } from 'next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { cLocales } from '@Constant/locales';
+import { withDefault } from '@Base/utils/dataExtension';
 
 function LandingPage() {
   const { t, i18n } = useTranslation('common');
@@ -56,8 +58,8 @@ function LandingPage() {
   };
 
   const currentLocale = i18n.language;
-
-  const toggleLocale = currentLocale === 'en' ? 'ko-KR' : 'en';
+  const toggleLocale =
+    currentLocale === cLocales.en ? cLocales.ko : cLocales.en;
 
   const handleToggleLanguage = () => {
     router.push(router.pathname, router.asPath, { locale: toggleLocale });
@@ -102,7 +104,12 @@ function LandingPage() {
               <FontAwesomeIcon icon={faPalette} />
             </S.MiniButton>
             <S.MiniButton onClick={handleToggleLanguage}>
-              {{ 'ko-KR': 'ENG', en: '한국어' }[currentLocale]}
+              {withDefault(
+                { [cLocales.ko]: 'ENG', [cLocales.en]: '한국어' }[
+                  currentLocale
+                ],
+                '한국어'
+              )}
             </S.MiniButton>
             <S.MiniButton onClick={handleShare}>
               <FontAwesomeIcon icon={faShareNodes} />

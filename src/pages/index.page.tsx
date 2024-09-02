@@ -22,6 +22,8 @@ import { canWebShare, webShare } from '@Utils/share';
 import { copyUrl } from '@Utils/clipboard';
 import ROUTE_PATH from '@Constant/routePath';
 import * as S from './style';
+import { cLocales } from '@Constant/locales';
+import { withDefault } from '@Base/utils/dataExtension';
 
 export default function Home() {
   const [numberOfUsers, setNumberOfUsers] = useState(0);
@@ -101,7 +103,7 @@ export default function Home() {
 
   const handleToggleLanguage = () => {
     router.push(router.pathname, router.asPath, {
-      locale: currentLocale === 'en' ? 'ko-KR' : 'en',
+      locale: currentLocale === cLocales.en ? cLocales.ko : cLocales.en,
     });
   };
 
@@ -114,7 +116,10 @@ export default function Home() {
     <S.PageWrapper>
       <S.TopPage>
         <S.LanguageButton onClick={handleToggleLanguage}>
-          {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[currentLocale]}
+          {withDefault(
+            { [cLocales.ko]: 'ENG', [cLocales.en]: '한국어' }[currentLocale],
+            '한국어'
+          )}
         </S.LanguageButton>
 
         <S.TitleWrapper ref={topRef}>

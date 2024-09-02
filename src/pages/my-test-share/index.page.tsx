@@ -10,12 +10,12 @@ import ROUTE_PATH from '@Constant/routePath';
 import AlertModal from '@Components/AlertModal';
 import { isEmpty } from '@Base/utils/check';
 import * as S from './style';
+import { useRouter } from 'next/router';
+import { cLocales } from '@Constant/locales';
+import { withDefault } from '@Base/utils/dataExtension';
 
 const MyTestShare = () => {
-  const searchParams = useSearchParams();
   const { t } = useTranslation();
-
-  const imageName = searchParams.get('imageName');
 
   const {
     isOpen: isOpenAlertModal,
@@ -24,9 +24,7 @@ const MyTestShare = () => {
     close: closeAlertModal,
   } = useModal({ defaultMessage: '' });
 
-  const testUrl = `${
-    typeof window !== 'undefined' ? location.origin : 'https://omct.web.app'
-  }${ROUTE_PATH.choiceColor}?imageName=${imageName}`;
+  const testUrl = useTestUrl();
 
   const handleWebShare = useShareWeb({
     onError: (reason) => {
@@ -79,3 +77,24 @@ const MyTestShare = () => {
 };
 
 export default MyTestShare;
+
+//#region sub components
+//#endregion
+
+//#region logics
+const useTestUrl = () => {
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const origin =
+    typeof window !== 'undefined' ? location.origin : 'https://omct.web.app';
+  const locale = withDefault(router.locale, cLocales.en);
+  const imageName = searchParams.get('imageName');
+  const testUrl = `${origin}/${locale}${ROUTE_PATH.choiceColor}?imageName=${imageName}`;
+
+  return testUrl;
+};
+//#endregion
+
+//#region styled components
+//#endregion
