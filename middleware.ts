@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export function middleware(req: NextRequest) {
   // 지원되는 언어 목록
-  const supportedLanguages = ['en', 'ko-KR'];
+  const supportedLanguages = ['en', 'ko'];
 
   // 요청 URL에서 pathname을 가져옵니다.
   const { nextUrl: url } = req;
