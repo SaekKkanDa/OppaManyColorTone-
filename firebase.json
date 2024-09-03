@@ -5,13 +5,21 @@
   "hosting": {
     "source": ".",
     "site": "omct",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "frameworksBackend": {
       "region": "asia-east1"
-    }
+    },
+    "redirects": [
+      {
+        "source": "/locales/en/translation.json",
+        "destination": "/locales/en/common.json",
+        "type": 301
+      },
+      {
+        "source": "/locales/ko/translation.json",
+        "destination": "/locales/ko/common.json",
+        "type": 301
+      }
+    ]
   }
 }
