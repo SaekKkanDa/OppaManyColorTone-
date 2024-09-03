@@ -4,7 +4,7 @@ export const canWebShare =
 
 export async function webShare() {
   const shareData = {
-    title: '오빠 톤 많아? 퍼스널 컬러 자가진단',
+    title: '리트머스 페이스 - 퍼스널 컬러 자가진단',
     text: '나에게 어울리는 컬러는 무엇일까?',
     url:
       typeof window !== 'undefined'

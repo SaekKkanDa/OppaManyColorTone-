@@ -44,11 +44,11 @@ export default class MyDocument extends Document {
         <Head>
           <meta
             name="application-name"
-            content="오빠 톤 많아? 퍼스널 컬러 자가진단"
+            content="리트머스 페이스 - 퍼스널 컬러 자가진단"
           ></meta>
           <meta
             name="msapplication-tooltip"
-            content="오빠 톤 많아? 퍼스널 컬러 자가진단"
+            content="리트머스 페이스 - 퍼스널 컬러 자가진단"
           ></meta>
           <meta
             name="description"
@@ -62,7 +62,7 @@ export default class MyDocument extends Document {
           {/* og tag */}
           <meta
             property="og:title"
-            content="오빠 톤 많아? 퍼스널 컬러 자가진단"
+            content="리트머스 페이스 - 퍼스널 컬러 자가진단"
           />
           <meta property="og:image" content="/preview/og-image.png" />
           <meta property="og:url" content="https://omct.web.app" />
