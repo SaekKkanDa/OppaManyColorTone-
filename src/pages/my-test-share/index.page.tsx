@@ -54,9 +54,9 @@ const MyTestShare = () => {
         <S.TestUrlWrapper>
           <S.TestUrlHeader>
             <h1>{t('myTestUrl')}</h1>
-            <button onClick={handleCopyUrl}>
+            <S.CopyUrlButton onClick={handleCopyUrl}>
               <FontAwesomeIcon icon={faCopy} />
-            </button>
+            </S.CopyUrlButton>
           </S.TestUrlHeader>
           <S.TestUrl>{testUrl}</S.TestUrl>
         </S.TestUrlWrapper>
