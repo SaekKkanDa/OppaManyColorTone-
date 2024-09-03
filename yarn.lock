@@ -804,9 +804,21 @@
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.2.tgz"
   integrity sha512-mh65xKQAzI6iBcFzwv28KVWSmCkdRBWoOh+bYQGW3+6OZvbbN3TqMGo5hqYxQniRcH9F2VZIoJCm4pa3BPDK/A==
   dependencies:
-    "@jridgewell/set-array" "^1.0.1"
+    "string-width" "^5.1.2"
+    "string-width-cjs" "npm:string-width@^4.2.0"
+    "strip-ansi" "^7.0.1"
+    "strip-ansi-cjs" "npm:strip-ansi@^6.0.1"
+    "wrap-ansi" "^8.1.0"
+    "wrap-ansi-cjs" "npm:wrap-ansi@^7.0.0"
+
+"@jridgewell/gen-mapping@^0.3.0", "@jridgewell/gen-mapping@^0.3.2", "@jridgewell/gen-mapping@^0.3.5":
+  "integrity" "sha512-IzL8ZoEDIBRWEzlCcRhOaCupYyN5gdIK+Q6fbFdPDg6HqX6jpkItn7DFIpW9LQzXG6Df9sA7+OKnq0qlz/GaQg=="
+  "resolved" "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.3.5.tgz"
+  "version" "0.3.5"
+  dependencies:
+    "@jridgewell/set-array" "^1.2.1"
     "@jridgewell/sourcemap-codec" "^1.4.10"
-    "@jridgewell/trace-mapping" "^0.3.9"
+    "@jridgewell/trace-mapping" "^0.3.24"
 
 "@jridgewell/resolve-uri@3.1.0":
   version "3.1.0"
@@ -833,8 +845,8 @@
   resolved "https://registry.npmjs.org/@jridgewell/trace-mapping/-/trace-mapping-0.3.17.tgz"
   integrity sha512-MCNzAp77qzKca9+W/+I0+sEpaUnZoeasnghNeVc41VZCEKaCH73Vq3BZZ/SzWIgrqE4H4ceI+p+b6C0mHf9T4g==
   dependencies:
-    "@jridgewell/resolve-uri" "3.1.0"
-    "@jridgewell/sourcemap-codec" "1.4.14"
+    "@jridgewell/resolve-uri" "^3.1.0"
+    "@jridgewell/sourcemap-codec" "^1.4.14"
 
 "@next/env@14.2.5":
   version "14.2.5"
@@ -1096,9 +1108,11 @@
   resolved "https://registry.npmjs.org/@sentry/replay/-/replay-7.52.1.tgz"
   integrity sha512-A+RaUmpU9/yBHnU3ATemc6wAvobGno0yf5R6fZYkAFoo2FCR2YG6AXxkTazymIf8v2DnLGaSDORYDPdhQClU9A==
   dependencies:
-    "@sentry/core" "7.52.1"
-    "@sentry/types" "7.52.1"
-    "@sentry/utils" "7.52.1"
+    "@sentry/browser" "8.27.0"
+    "@sentry/core" "8.27.0"
+    "@sentry/types" "8.27.0"
+    "@sentry/utils" "8.27.0"
+    "hoist-non-react-statics" "^3.3.2"
 
 "@sentry/types@7.52.1":
   version "7.52.1"
@@ -1192,6 +1206,22 @@
   version "18.14.1"
   resolved "https://registry.npmjs.org/@types/node/-/node-18.14.1.tgz"
   integrity sha512-QH+37Qds3E0eDlReeboBxfHbX9omAcBCXEzswCu6jySP642jiM3cYSIkU/REqwhCUqXdonHFuBfJDiAJxMNhaQ==
+
+"@types/pg-pool@2.0.4":
+  "integrity" "sha512-qZAvkv1K3QbmHHFYSNRYPkRjOWRLBYrL4B9c+wG0GSVGBw0NtJwPcgx/DSddeDJvRGMHCEQ4VMEVfuJ/0gZ3XQ=="
+  "resolved" "https://registry.npmjs.org/@types/pg-pool/-/pg-pool-2.0.4.tgz"
+  "version" "2.0.4"
+  dependencies:
+    "@types/pg" "*"
+
+"@types/pg@*", "@types/pg@8.6.1":
+  "integrity" "sha512-1Kc4oAGzAl7uqUStZCDvaLFqZrW9qWSjXOmBfdgyBP5La7Us6Mg4GBvRlSoaZMhQF/zSj1C8CtKMBkoiT8eL8w=="
+  "resolved" "https://registry.npmjs.org/@types/pg/-/pg-8.6.1.tgz"
+  "version" "8.6.1"
+  dependencies:
+    "@types/node" "*"
+    "pg-protocol" "*"
+    "pg-types" "^2.2.0"
 
 "@types/prop-types@*":
   version "15.7.5"
@@ -2954,15 +2984,15 @@ next@^14.2.4:
     postcss "8.4.31"
     styled-jsx "5.1.1"
   optionalDependencies:
-    "@next/swc-darwin-arm64" "14.2.5"
-    "@next/swc-darwin-x64" "14.2.5"
-    "@next/swc-linux-arm64-gnu" "14.2.5"
-    "@next/swc-linux-arm64-musl" "14.2.5"
-    "@next/swc-linux-x64-gnu" "14.2.5"
-    "@next/swc-linux-x64-musl" "14.2.5"
-    "@next/swc-win32-arm64-msvc" "14.2.5"
-    "@next/swc-win32-ia32-msvc" "14.2.5"
-    "@next/swc-win32-x64-msvc" "14.2.5"
+    "@next/swc-darwin-arm64" "13.5.6"
+    "@next/swc-darwin-x64" "13.5.6"
+    "@next/swc-linux-arm64-gnu" "13.5.6"
+    "@next/swc-linux-arm64-musl" "13.5.6"
+    "@next/swc-linux-x64-gnu" "13.5.6"
+    "@next/swc-linux-x64-musl" "13.5.6"
+    "@next/swc-win32-arm64-msvc" "13.5.6"
+    "@next/swc-win32-ia32-msvc" "13.5.6"
+    "@next/swc-win32-x64-msvc" "13.5.6"
 
 node-fetch@2.6.7:
   version "2.6.7"

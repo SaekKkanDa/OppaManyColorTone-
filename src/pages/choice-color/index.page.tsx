@@ -49,6 +49,7 @@ function ChoiceColor() {
   const [selectedTypes, setSelectedTypes] = useState<ColorType[]>([]);
   const [selectedColor, setSelectedColor] = useState('');
   const [stageNum, setStageNum] = useState(0);
+  const [isClickable, setIsClickable] = useState(true);
 
   const selectedTypesLength = selectedTypes.length;
   const MAX_STAGE_NUM = choiceColorData.length;
@@ -68,8 +69,9 @@ function ChoiceColor() {
   const userImg = useCropImg();
 
   const onBasicClick = (selectedChip: ChoiceColorDataType) => {
-    if (!(stageNum < MAX_STAGE_NUM)) return;
+    if (!(stageNum < MAX_STAGE_NUM) || !isClickable) return;
 
+    setIsClickable(false);
     setSelectedTypes((prev) => [...prev, selectedChip.type]);
     setSelectedColor(selectedChip.color);
   };
@@ -79,6 +81,7 @@ function ChoiceColor() {
       const timeout = setTimeout(() => {
         setStageNum((prev) => prev + 1);
         setSelectedColor('');
+        setIsClickable(true);
       }, 600);
 
       return () => clearTimeout(timeout);
