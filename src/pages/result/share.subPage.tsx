@@ -1,22 +1,22 @@
 import React from 'react';
-import Link from 'next/link';
-import { FormattedMessage } from 'react-intl';
+import { useRouter } from 'next/router';
+import { useTranslation } from 'next-i18next';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDownload, faLink, faShare } from '@fortawesome/free-solid-svg-icons';
-import kakaoIcon from 'public/images/icon/kakaoIcon.png';
-
-import { isEmpty, isFalse } from '@Base/utils/check';
+import { isEmpty, isNil } from '@Base/utils/check';
 import AlertModal from '@Components/AlertModal';
 import { useModal } from '@Base/hooks/useModal';
 import ROUTE_PATH from '@Constant/routePath';
-import useKakaoShare from '@Hooks/useKakaoShare';
 import { copyUrl } from '@Utils/clipboard';
-import { canWebShare, webShare } from '@Utils/share';
-import { isChrome, isOSX } from '@Utils/userAgent';
 import RestartButton from '@Pages/result/RestartButton';
 import { captureAndDownload, checkIfKakaoAndAlert } from './share.logic';
 import * as S from './style';
+import { useShareKakao } from '@Hooks/useShareKakao';
+import { useShareWeb } from '@Hooks/useShareWeb';
+import { EOmctErrorNo } from '@Constant/errorKeyValue';
+import { IconDownload } from '@Components/Icon/IconDownload';
+import { IconCopy } from '@Components/Icon/IconCopy';
+import { IconKakao } from '@Components/Icon/IconKakao';
+import { IconShare } from '@Components/Icon/IconShare';
 
 interface MenuSubPageProps {
   resultContainerRef: React.RefObject<HTMLDivElement>;
@@ -24,6 +24,9 @@ interface MenuSubPageProps {
 }
 
 function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
+  const router = useRouter();
+  const { t } = useTranslation('common');
+
   // alert modal
   const {
     isOpen: isOpenAlertModal,
@@ -32,7 +35,23 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
     close: closeAlertModal,
   } = useModal({ defaultMessage: '' });
 
-  const { isLoading, kakaoShare } = useKakaoShare();
+  const kakaoShare = useShareKakao({
+    onError: () => openAlertModal('alertRetry'),
+  });
+
+  const webShare = useShareWeb({
+    onError: (reason) => {
+      if (reason === EOmctErrorNo.SHARE_NOT_SUPPORT_KAKAO_BROWSER) {
+        openAlertModal('alertKakao');
+      } else if (reason === EOmctErrorNo.SHARE_NOT_SUPPORT_BROWSER) {
+        openAlertModal('alertMacOS');
+      } else if (reason === EOmctErrorNo.SHARE_NOT_SUPPORT_FUNCTION) {
+        openAlertModal('alertNotSupportedBrowser');
+      }
+      // HJ TODO: assertion 함수 구현
+    },
+  });
+
   const kakaoAlertMsg = checkIfKakaoAndAlert();
 
   const onClickCapture = async () => {
@@ -42,7 +61,7 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
     }
 
     const wrapper = resultContainerRef.current;
-    if (isFalse(wrapper)) return;
+    if (isNil(wrapper)) return;
 
     const imgName = `${colorType}-result.png`;
     captureAndDownload(wrapper, imgName);
@@ -53,35 +72,13 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
       openAlertModal(kakaoAlertMsg);
       return;
     }
+
     const copyAlertMsg = await copyUrl(location.href);
     openAlertModal(copyAlertMsg);
   };
 
-  const onClickKakaoShare = () => {
-    if (isLoading) {
-      openAlertModal('alertRetry');
-    } else {
-      kakaoShare();
-    }
-  };
-
-  const onClickShare = async () => {
-    if (kakaoAlertMsg) {
-      openAlertModal(kakaoAlertMsg);
-      return;
-    }
-
-    if (isChrome() && isOSX()) {
-      openAlertModal('alertMacOS');
-      return;
-    }
-
-    if (!canWebShare) {
-      openAlertModal('alertNotSupportedBrowser');
-      return;
-    }
-
-    await webShare();
+  const handleGoToAllTypesView = () => {
+    router.push(ROUTE_PATH.allTypesView);
   };
 
   return (
@@ -89,57 +86,42 @@ function ShareSubPage({ resultContainerRef, colorType }: MenuSubPageProps) {
       <S.MenuContainer>
         <S.MenuItemWrapper>
           <S.MenuItemButton onClick={onClickCapture}>
-            <FontAwesomeIcon icon={faDownload} color={'white'} />
+            <IconDownload />
           </S.MenuItemButton>
-          <S.MenuItemName>
-            <FormattedMessage id="saveResult" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('saveResult')}</S.MenuItemName>
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
           <S.MenuItemButton onClick={onClickLinkCopy}>
-            <FontAwesomeIcon icon={faLink} color={'white'} />
+            <IconCopy />
           </S.MenuItemButton>
-          <S.MenuItemName>
-            <FormattedMessage id="copyUrl" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('copyUrl')}</S.MenuItemName>
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
-          <S.KakaoShareButton onClick={onClickKakaoShare}>
-            <S.MenuItemImg
-              src={kakaoIcon}
-              alt="카카오톡 공유 버튼"
-              width={48}
-              height={48}
-            />
+          <S.KakaoShareButton onClick={kakaoShare}>
+            <IconKakao width={48} height={48} />
           </S.KakaoShareButton>
-          <S.MenuItemName>
-            <FormattedMessage id="kakaotalk" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('kakaotalk')}</S.MenuItemName>
         </S.MenuItemWrapper>
 
         <S.MenuItemWrapper>
-          <S.MenuItemButton onClick={onClickShare}>
-            <FontAwesomeIcon icon={faShare} color={'white'} />
+          <S.MenuItemButton onClick={webShare}>
+            <IconShare />
           </S.MenuItemButton>
-          <S.MenuItemName>
-            <FormattedMessage id="shareResult" />
-          </S.MenuItemName>
+          <S.MenuItemName>{t('shareResult')}</S.MenuItemName>
         </S.MenuItemWrapper>
       </S.MenuContainer>
 
-      <S.ButtonsWrapper>
-        <Link href={ROUTE_PATH.allTypesView}>
-          <S.AllTypesButton>
-            <FormattedMessage id="allTypes" />
-          </S.AllTypesButton>
-        </Link>
+      <S.ButtonWrapper>
         <RestartButton />
-      </S.ButtonsWrapper>
+        <S.AllTypesButton onClick={handleGoToAllTypesView}>
+          {t('viewAllTypesButton')}
+        </S.AllTypesButton>
+      </S.ButtonWrapper>
       {isOpenAlertModal && !isEmpty(alertModalMessage) && (
         <AlertModal isOpen={isOpenAlertModal} handleClose={closeAlertModal}>
-          <FormattedMessage id={alertModalMessage} />
+          {t(`${alertModalMessage}`)}
         </AlertModal>
       )}
     </>

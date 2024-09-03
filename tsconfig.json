@@ -13,8 +13,6 @@
       "@Recoil/*": ["./src/recoil/*"],
       "@Styles/*": ["./src/styles/*"],
       "@Utils/*": ["./src/utils/*"],
-      "@Translations/*": ["./src/translations/*"],
-      // @Base
       "@Base/*": ["./base/*"]
     },
     "allowJs": true,
@@ -36,7 +34,8 @@
       {
         "name": "next"
       }
-    ]
+    ],
+    "strictPropertyInitialization": false
   },
   "include": [
     "src/**/*.ts",
@@ -44,7 +43,8 @@
     "@types/**/*d.ts",
     ".next/types/**/*.ts",
     "base/**/*.ts",
-    "base/**/*.tsx"
+    "base/**/*.tsx",
+    "middleware.ts"
   ],
   "exclude": ["node_modules", "src/libs"]
 }

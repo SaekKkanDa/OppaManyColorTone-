@@ -8,7 +8,8 @@ import ColorTransition, {
 } from '@Components/Transition/ColorTransition';
 import { useChangeTheme } from './palette.logic';
 import useCropImg from '@Hooks/useCropImg';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
+
 import { useTrigger } from '@Base/hooks/useTrigger';
 
 interface PaletteSubPageProps {
@@ -16,6 +17,8 @@ interface PaletteSubPageProps {
 }
 
 function PaletteSubPage({ colors }: PaletteSubPageProps) {
+  const { t } = useTranslation('common');
+
   const transitionRef = useRef<ColorTransitionInstance>(null);
   const { isTriggered: isBeforeClick, trigger } = useTrigger({});
   const changeTheme = useChangeTheme();
@@ -32,9 +35,7 @@ function PaletteSubPage({ colors }: PaletteSubPageProps) {
     <>
       <S.PaletteWrapper>
         {!isBeforeClick && (
-          <S.InteractionInfo>
-            <FormattedMessage id="interactionInfo" />
-          </S.InteractionInfo>
+          <S.InteractionInfo>{t('interactionInfo')}</S.InteractionInfo>
         )}
         <Palette imgSrc={cropImg} colors={colors} onClick={onClickPalette} />
       </S.PaletteWrapper>

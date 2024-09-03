@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import styled from 'styled-components';
-import { Button, flexCustom } from '@Styles/theme';
+import { BorderedButton, Button, flexCustom, layout } from '@Styles/theme';
 
 export const CroppedImageBox = styled(Image)`
   width: 100%;
@@ -10,15 +10,19 @@ export const CroppedImageBox = styled(Image)`
 `;
 
 export const FlexContainer = styled.div<{ isOpen: boolean }>`
+  ${layout}
   display: ${({ isOpen }) => (isOpen ? 'hidden' : 'block')};
-  height: 100dvh;
   ${flexCustom('column', 'center', 'center')}
-  padding: 40px 20px;
+`;
+
+export const ImageSelectWrapper = styled.div`
+  flex-grow: 1;
+  ${flexCustom('column', 'center', 'center')}
+  row-gap: 1.5rem;
 `;
 
 export const ImageBox = styled.div`
   ${flexCustom('column', 'center', 'center')}
-  margin-bottom: 30px;
   width: 150px;
   height: 150px;
   border-radius: 50%;
@@ -27,6 +31,9 @@ export const ImageBox = styled.div`
 
 export const ImageLabel = styled.label`
   ${flexCustom('column', 'center', 'center')}
+  width: 100%;
+  height: 100%;
+  border-radius: inherit;
   cursor: pointer;
 `;
 
@@ -38,34 +45,82 @@ export const InputFile = styled.input`
   display: none;
 `;
 
-export const Guidance = styled.div`
-  margin: 24px 0 12px;
+export const Guidance = styled.p`
   text-align: center;
-  line-height: 1.6em;
 `;
 
-export const Notification = styled(Guidance)`
-  padding: 8px 12px;
+export const Notification = styled.div`
+  padding: 0.5rem 0.75rem;
+  width: 268px;
   border-radius: 6px;
   background-color: ${({ theme }) => theme.gray[200]};
   color: ${({ theme }) => theme.gray[500]};
-  text-align: left;
-  font-size: 12px;
+  font-size: ${({ theme }) => theme.font.size.xs};
+  white-space: pre-line;
+  word-break: keep-all;
 
   h6 {
-    margin-bottom: 0.2em;
-    font-size: 14px;
-    font-family: 'Noto Sans KR', sans-serif;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    font-family: inherit;
 
     svg {
-      margin-right: 4px;
+      margin-right: 0.25rem;
     }
   }
 `;
 
-export const NextButton = styled(Button)`
-  position: fixed;
-  bottom: 48px;
-  left: 50%;
-  transform: translateX(-50%);
+export const ButtonWrapper = styled.div`
+  ${flexCustom('column', 'center', 'center')}
+  row-gap: 0.5rem;
+  width: 100%;
+`;
+
+export const PrimaryButton = Button;
+
+export const SecondaryButton = BorderedButton;
+
+// Modal
+export const ModalText = styled.div`
+  text-align: center;
+`;
+
+export const PersonalInfoConsentWrapper = styled.div`
+  ${flexCustom('column', 'flex-start', 'center')}
+  row-gap: 1rem;
+  padding-bottom: 1rem;
+
+  & h1 {
+    font-size: ${({ theme }) => theme.font.size.lg};
+    font-family: inherit;
+    font-weight: 600;
+  }
+
+  & ul {
+    list-style-type: disc;
+    color: ${({ theme }) => theme.gray[600]};
+
+    & li {
+      margin-left: 1.5rem;
+      font-size: ${({ theme }) => theme.font.size.sm};
+    }
+  }
+
+  & p {
+    font-size: ${({ theme }) => theme.font.size.xs};
+    color: ${({ theme }) => theme.gray[400]};
+  }
+`;
+
+export const ModalButtonWrapper = styled.div`
+  ${flexCustom('row', 'center', 'center')}
+  column-gap: 0.5rem;
+`;
+
+export const ModalPrimaryButton = styled(Button)`
+  flex-basis: 60%;
+`;
+
+export const ModalSecondaryButton = styled(BorderedButton)`
+  flex-basis: 40%;
 `;

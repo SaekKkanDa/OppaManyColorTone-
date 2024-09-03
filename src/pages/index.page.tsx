@@ -1,27 +1,67 @@
+'use client';
+
 import { useEffect, useState } from 'react';
+import { type GetServerSideProps } from 'next';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { useRecoilState, useSetRecoilState } from 'recoil';
-import { FormattedMessage, useIntl } from 'react-intl';
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import { useSetRecoilState } from 'recoil';
+import Spline from '@splinetool/react-spline';
+import { Application } from '@splinetool/runtime';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPalette, faShareNodes } from '@fortawesome/free-solid-svg-icons';
-import { CropImage, Locale } from '@Recoil/app';
-import ColorChipSpinner from '@Components/ColorChipSpinner';
-import { useCountUp } from '@Hooks/useCountUp';
+import {
+  faChevronDown,
+  faShareNodes,
+  faSwatchbook,
+} from '@fortawesome/free-solid-svg-icons';
+import { useIntersectionObserver } from '@Base/hooks/useIntersectionObserver';
+import { useCountUp } from '@Base/hooks/useCountUp';
+import { CropImage } from '@Recoil/app';
 import omctDb from '@Utils/omctDb';
 import { canWebShare, webShare } from '@Utils/share';
-import ROUTE_PATH from '@Constant/routePath';
 import { copyUrl } from '@Utils/clipboard';
-import questionBubble from 'public/images/icon/question-bubble.png';
+import ROUTE_PATH from '@Constant/routePath';
 import * as S from './style';
+import { cLocales } from '@Constant/locales';
+import { withDefault } from '@Base/utils/dataExtension';
 
-function LandingPage() {
+export default function Home() {
   const [numberOfUsers, setNumberOfUsers] = useState(0);
+  const [isInViewBottom, setIsInViewBottom] = useState(false);
+  const [isRunningStartTransition, setIsRunningStartTransition] =
+    useState(false);
   const router = useRouter();
-  const intl = useIntl();
 
   const setUserImg = useSetRecoilState(CropImage);
-  const [locale, setLocale] = useRecoilState(Locale);
+
+  const { t, i18n } = useTranslation('common');
+  const currentLocale = i18n.language;
+
+  const { ref: topRef } = useIntersectionObserver(
+    (entry: IntersectionObserverEntry) => {
+      if (entry.isIntersecting) setIsInViewBottom(false);
+    }
+  );
+  const { ref: bottomRef } = useIntersectionObserver(
+    (entry: IntersectionObserverEntry) => {
+      if (entry.isIntersecting) setIsInViewBottom(entry.isIntersecting);
+    }
+  );
+
+  const COUNT_UP_DURATION = 2000;
+  const userCount = useCountUp(
+    numberOfUsers,
+    COUNT_UP_DURATION,
+    isInViewBottom
+  );
+
+  useEffect(() => {
+    if (window !== undefined) document.body.style.backgroundColor = S.bgColor;
+
+    return () => {
+      if (window !== undefined) document.body.style.backgroundColor = '';
+    };
+  }, []);
 
   useEffect(() => {
     const getNumberOfUsers = async () => {
@@ -31,15 +71,24 @@ function LandingPage() {
     getNumberOfUsers();
   }, []);
 
-  const COUNT_UP_DURATION = 2000;
-  const count = useCountUp(numberOfUsers, COUNT_UP_DURATION);
-
   useEffect(() => {
     setUserImg('');
   }, [setUserImg]);
 
-  const onClickStartButton = () => {
+  const handleClickStart = () => {
+    setIsRunningStartTransition(true);
+  };
+
+  const onStartTransitionEnd = () => {
     router.push(ROUTE_PATH.imageUpload);
+  };
+
+  const handleScroll = () => {
+    if (typeof window !== 'undefined')
+      scrollTo({
+        top: isInViewBottom ? 0 : document.body.scrollHeight,
+        behavior: 'smooth',
+      });
   };
 
   const handleViewAllType = () => {
@@ -49,66 +98,89 @@ function LandingPage() {
   const handleShare = async () => {
     if (canWebShare) return await webShare();
     const messageId = await copyUrl(location.href);
-    alert(intl.messages[messageId]);
+    alert(t(`${messageId}`));
   };
 
-  const handleLocale = () => {
-    setLocale((prev) => (prev === 'en-US' ? 'ko-KR' : 'en-US'));
+  const handleToggleLanguage = () => {
+    router.push(router.pathname, router.asPath, {
+      locale: currentLocale === cLocales.en ? cLocales.ko : cLocales.en,
+    });
+  };
+
+  const onLoadSpline = (app: Application) => {
+    app.setZoom(0.15);
+    app.setBackgroundColor(S.bgColor);
   };
 
   return (
-    <>
-      <S.LandingWrap>
-        <S.LandingTitleDiv>
-          <S.LandingTitle>
-            <FormattedMessage id="landingTitle_1" />{' '}
-            <S.TitleHighlight>
-              <FormattedMessage id="titleHighlight" />
-            </S.TitleHighlight>{' '}
-            <FormattedMessage id="landingTitle_2" />
-          </S.LandingTitle>
-          <S.LandingSubTitle>
-            <FormattedMessage id="landingSubTitle" />
-          </S.LandingSubTitle>
-        </S.LandingTitleDiv>
+    <S.PageWrapper>
+      <S.TopPage>
+        <S.LanguageButton onClick={handleToggleLanguage}>
+          {withDefault(
+            { [cLocales.ko]: 'ENG', [cLocales.en]: '한국어' }[currentLocale],
+            '한국어'
+          )}
+        </S.LanguageButton>
 
-        <S.SpinnerWrapper>
-          <ColorChipSpinner />
-          <S.QuestionMark>
-            <Image
-              src={questionBubble}
-              alt="thought bubble"
-              width={48}
-              height={48}
-            />
-          </S.QuestionMark>
-        </S.SpinnerWrapper>
+        <S.TitleWrapper ref={topRef}>
+          <S.Title>{t('landingTitle')}</S.Title>
+          <S.Subtitle>{t('landingSubTitle')}</S.Subtitle>
+        </S.TitleWrapper>
 
-        <S.LandingBottomDiv>
-          <S.UserCount>
-            <FormattedMessage id="userCount_1" /> {count.toLocaleString()}
-            <FormattedMessage id="userCount_2" />
-          </S.UserCount>
+        <Spline
+          scene="https://prod.spline.design/hZ8jGzxERn1B-4De/scene.splinecode"
+          style={{
+            width: '100%',
+            height: '100%',
+          }}
+          onLoad={onLoadSpline}
+        />
 
-          <S.StartButton onClick={onClickStartButton}>
-            <FormattedMessage id="startButton" />
-          </S.StartButton>
+        <S.ScrollButton $isInViewBottom={isInViewBottom} onClick={handleScroll}>
+          <FontAwesomeIcon icon={faChevronDown} />
+        </S.ScrollButton>
+      </S.TopPage>
 
-          <S.MiniButtonWrapper>
-            <S.MiniButton $type="icon" onClick={handleViewAllType}>
-              <FontAwesomeIcon icon={faPalette} />
-            </S.MiniButton>
-            <S.MiniButton $type="text" onClick={handleLocale}>
-              {{ 'ko-KR': 'ENG', 'en-US': '한국어' }[locale]}
-            </S.MiniButton>
-            <S.MiniButton $type="icon" onClick={handleShare}>
-              <FontAwesomeIcon icon={faShareNodes} />
-            </S.MiniButton>
-          </S.MiniButtonWrapper>
-        </S.LandingBottomDiv>
-      </S.LandingWrap>
-    </>
+      <S.BottomPage>
+        <S.UserCountMessage ref={bottomRef} $isInViewBottom={isInViewBottom}>
+          {t('userCount_1')}
+          <S.UserCountWrapper>
+            <S.UserCount>{userCount.toLocaleString()}</S.UserCount>
+            {t('userCount_2')}
+          </S.UserCountWrapper>
+          {t('userCount_3')}
+        </S.UserCountMessage>
+
+        <S.StartButton
+          $isRunningStartTransition={isRunningStartTransition}
+          onClick={handleClickStart}
+        >
+          {t('startButton')}
+        </S.StartButton>
+        <S.StartTransition
+          $isRunningStartTransition={isRunningStartTransition}
+          onTransitionEnd={onStartTransitionEnd}
+        />
+
+        <S.MiniButtonWrapper $isInViewBottom={isInViewBottom}>
+          <S.MiniButton onClick={handleShare}>
+            <FontAwesomeIcon icon={faShareNodes} />
+            {t('shareButton')}
+          </S.MiniButton>
+          <S.MiniButton onClick={handleViewAllType}>
+            <FontAwesomeIcon icon={faSwatchbook} />
+            {t('viewAllTypesButton')}
+          </S.MiniButton>
+        </S.MiniButtonWrapper>
+      </S.BottomPage>
+    </S.PageWrapper>
   );
 }
 
-export default LandingPage;
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};

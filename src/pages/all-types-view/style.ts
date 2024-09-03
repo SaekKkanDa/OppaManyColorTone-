@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { flexCustom } from '@Styles/theme';
+import { flexCustom, layout } from '@Styles/theme';
 import { PieChart as _PieChart } from 'react-minimal-pie-chart';
 
 type PaletteGridItemProps = {
@@ -12,18 +12,16 @@ type TagStyleProps = {
 };
 
 export const Wrapper = styled.div`
+  ${layout}
   ${flexCustom('column', 'center', 'flex-start')}
-  width: 100%;
-  max-width: var(--viewport-max-width);
-  height: 100%;
-  padding: 32px;
-  margin: 0 auto;
 `;
 
 export const BackButton = styled.button`
   align-self: flex-start;
-  margin: -8px 0 0 -8px;
-  font-size: 20px;
+  margin: -0.75rem 0 0 -0.75rem;
+  width: 1.5rem;
+  height: 1.5rem;
+  color: ${({ theme }) => theme.gray[700]};
   cursor: pointer;
 `;
 
@@ -32,13 +30,18 @@ export const SubTitle = styled.span`
 `;
 
 export const Title = styled.h1`
-  padding-top: 16px;
-  font-size: 1.6rem;
+  font-size: ${({ theme }) => theme.font.size['1.5xl']};
 `;
 
 export const PieChart = styled(_PieChart)`
   max-height: calc(var(--viewport-max-width) - 32px * 2);
   margin: 32px 0;
+`;
+
+export const ColorTypeWrapper = styled.div`
+  ${flexCustom('column', 'center', 'center')}
+  row-gap: 1rem;
+  width: 100%;
 `;
 
 export const ColorTypeTitle = styled.h3`
@@ -70,7 +73,6 @@ export const PaletteGrid = styled.div`
   grid-template-rows: repeat(5, 1fr);
   gap: 2px;
   width: 100%;
-  margin: 20px 0;
 `;
 
 export const PaletteGridItem = styled.div.attrs<PaletteGridItemProps>(

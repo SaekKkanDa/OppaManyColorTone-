@@ -27,7 +27,7 @@ export function shareKakaoDefault() {
   Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
-      title: '오빠 톤 많아?',
+      title: '리트머스 페이스',
       description: '퍼스널 컬러 자가진단',
       imageUrl:
         'https://firebasestorage.googleapis.com/v0/b/oppamanycolortone-5fb42.appspot.com/o/preview%2Fkakao-share-preview.png?alt=media&token=d209f2d5-e3f8-4a1d-97d6-8d87b220b8a4',

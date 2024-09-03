@@ -1,4 +1,4 @@
-import Script from 'next/script';
+/* eslint-disable @next/next/no-document-import-in-page */
 import Document, {
   Html,
   Head,
@@ -44,11 +44,11 @@ export default class MyDocument extends Document {
         <Head>
           <meta
             name="application-name"
-            content="오빠 톤 많아? 퍼스널 컬러 자가진단"
+            content="리트머스 페이스 - 퍼스널 컬러 자가진단"
           ></meta>
           <meta
             name="msapplication-tooltip"
-            content="오빠 톤 많아? 퍼스널 컬러 자가진단"
+            content="리트머스 페이스 - 퍼스널 컬러 자가진단"
           ></meta>
           <meta
             name="description"
@@ -62,7 +62,7 @@ export default class MyDocument extends Document {
           {/* og tag */}
           <meta
             property="og:title"
-            content="오빠 톤 많아? 퍼스널 컬러 자가진단"
+            content="리트머스 페이스 - 퍼스널 컬러 자가진단"
           />
           <meta property="og:image" content="/preview/og-image.png" />
           <meta property="og:url" content="https://omct.web.app" />
@@ -82,13 +82,6 @@ export default class MyDocument extends Document {
           <meta
             name="naver-site-verification"
             content="4be41e9a6714ed8ff418f6bfaa1eb7fcb635871c"
-          />
-
-          {/* Google Adsense */}
-          <Script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9551977219354865"
-            crossOrigin="anonymous"
           />
 
           {/* favicon: icons created by Freepik - Flaticon */}
@@ -115,6 +108,10 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9551977219354865"
+          />
         </body>
       </Html>
     );
