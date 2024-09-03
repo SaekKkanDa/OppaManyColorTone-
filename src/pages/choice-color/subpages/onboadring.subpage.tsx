@@ -5,29 +5,41 @@ import {
   onboardingState,
 } from '@Pages/choice-color/choiceColor.atom';
 import { Tooltip } from '@Pages/choice-color/subpages/tooltip.subpage';
+import { useEffect } from 'react';
 import { createPortal } from 'react-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import styled from 'styled-components';
 
 export const OnboardingPage = () => {
-  const isOnboarding = useRecoilValue(onboardingState);
+  const [isOnboarding, setIsOnboarding] = useRecoilState(onboardingState);
   const onBoardingEl = useRecoilValue(onboardingElState);
 
-  if (isNil(onBoardingEl)) return;
+  useEffect(() => {
+    const close = () => setIsOnboarding(false);
+    document.body.addEventListener('click', close);
+    return () => {
+      document.body.removeEventListener('click', close);
+    };
+  }, [setIsOnboarding]);
+
+  if (isNil(onBoardingEl)) return <></>;
 
   if (isOnboarding) {
     // HJ TODO: z-index enum으로 관리
     onBoardingEl.style.zIndex = '20';
   } else {
     onBoardingEl.style.zIndex = 'unset';
-    return;
+    return <></>;
   }
 
   const { width, height } = onBoardingEl.getBoundingClientRect();
 
   return (
     <>
-      {createPortal(<Backdrop />, document.body)}
+      {createPortal(
+        <Backdrop onClick={() => setIsOnboarding(false)} />,
+        document.body
+      )}
       {createPortal(
         <SContainer style={{ width: width + 8, height: height + 8 }}>
           <Tooltip />

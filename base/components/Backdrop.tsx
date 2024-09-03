@@ -6,7 +6,7 @@ export const Backdrop = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #27272a;
-  opacity: 0.5;
+  background-color: ${({ theme }) => theme.gray[900]};
+  opacity: 0.6;
   z-index: 10;
 `;

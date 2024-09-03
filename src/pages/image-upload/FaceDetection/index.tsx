@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import AvatarEditor from 'react-avatar-editor';
 import { useRecoilState } from 'recoil';
-import { FormattedMessage } from 'react-intl';
+import { useTranslation } from 'next-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import { CropImage } from '@Recoil/app';
@@ -20,6 +20,8 @@ function FaceDetection({
   setAlertMessage,
   handleClose,
 }: FaceDetectionProps) {
+  const { t } = useTranslation('common');
+
   const [image, setImage] = useState('');
   const [scale, setScale] = useState(1);
   const [, setCropImage] = useRecoilState(CropImage);
@@ -108,12 +110,12 @@ function FaceDetection({
         <FontAwesomeIcon icon={faPlus} size="1x" color={theme.gray[900]} />
       </S.ScaleBox>
       <S.Guidance>
-        <FormattedMessage id="modalGuidance_1" />
+        {t('modalGuidance_1')}
         <br />
-        <FormattedMessage id="modalGuidance_2" />
+        {t('modalGuidance_2')}
       </S.Guidance>
       <S.ConfirmButton onClick={handleSave}>
-        <FormattedMessage id="confirmButton" />
+        {t('confirmButton')}
       </S.ConfirmButton>
     </S.FlexContainer>
   );

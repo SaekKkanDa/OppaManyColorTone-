@@ -1,5 +1,12 @@
 import Head from 'next/head';
 import type { AppProps } from 'next/app';
+import i18n from 'i18next';
+import Backend from 'i18next-http-backend';
+import LanguageDetector from 'i18next-browser-languagedetector';
+import { initReactI18next } from 'react-i18next';
+import { appWithTranslation } from 'next-i18next';
+
+import Script from 'next/script';
 import { RecoilRoot } from 'recoil';
 import { ThemeProvider } from 'styled-components';
 import { useLoading } from '@Hooks/useLoading';
@@ -12,7 +19,25 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google';
 import { LoadingProvider } from '@Components/Contexts/LoadingContext';
 
+import i18nextConfig from '../../next-i18next.config';
+
 config.autoAddCss = false;
+
+// i18n 초기화
+i18n
+  .use(Backend)
+  .use(LanguageDetector)
+  .use(initReactI18next)
+  .init({
+    fallbackLng: 'en',
+    lng: 'en',
+    react: {
+      useSuspense: false,
+    },
+    backend: {
+      loadPath: '/locales/{{lng}}/{{ns}}.json',
+    },
+  });
 
 const App = ({ Component, pageProps }: AppProps) => {
   const isLoading = useLoading();
@@ -23,6 +48,13 @@ const App = ({ Component, pageProps }: AppProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>오빠 톤 많아? 퍼스널 컬러 자가진단 테스트</title>
       </Head>
+
+      {/* Google Adsense */}
+      <Script
+        async
+        src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9551977219354865"
+        crossOrigin="anonymous"
+      />
 
       {/* Google Analytics 4 + Google Tag */}
       <GoogleAnalytics gaId="G-MSP07W6675" />
@@ -44,4 +76,4 @@ const App = ({ Component, pageProps }: AppProps) => {
   );
 };
 
-export default App;
+export default appWithTranslation(App, i18nextConfig);

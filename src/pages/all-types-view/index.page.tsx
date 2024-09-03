@@ -1,12 +1,12 @@
 import { useState } from 'react';
 import { useRouter } from 'next/router';
-import {
-  FormattedMessage,
-  WrappedComponentProps,
-  injectIntl,
-} from 'react-intl';
+import { useTranslation } from 'next-i18next';
+
+import { GetServerSideProps } from 'next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft } from '@fortawesome/free-solid-svg-icons';
 import color from '@Data/color';
 import resultColorData from '@Data/resultColorData';
 import theme from '@Styles/theme';
@@ -18,7 +18,9 @@ const defaultLabelStyle = {
   fontFamily: "'Noto Sans KR', sans-serif",
 };
 
-const AllTypesView = ({ intl }: WrappedComponentProps) => {
+const AllTypesView = () => {
+  const { t } = useTranslation('common');
+
   const [selectedIndex, setSelectedIndex] = useState<number | undefined>(
     undefined
   );
@@ -33,21 +35,18 @@ const AllTypesView = ({ intl }: WrappedComponentProps) => {
   return (
     <S.Wrapper>
       <S.BackButton onClick={() => router.back()}>
-        <FontAwesomeIcon icon={faArrowLeft} />
+        <FontAwesomeIcon icon={faChevronLeft} />
       </S.BackButton>
 
       <S.Title>
-        <S.SubTitle>
-          <FormattedMessage id="allTypeView_1" />
-        </S.SubTitle>
-        <FormattedMessage id="allTypeView_2" />
+        <S.SubTitle>{t('allTypeView_1')}</S.SubTitle>
+        {t('allTypeView_2')}
       </S.Title>
 
       <S.PieChart
         data={color.map(({ type }, index) => {
-          const message = intl.formatMessage({ id: `${type}.name` });
           return {
-            title: message,
+            title: t(`${type}.name`),
             color:
               hoveredIndex === index || selectedIndex === index
                 ? color[index].textColor
@@ -85,23 +84,11 @@ const AllTypesView = ({ intl }: WrappedComponentProps) => {
       />
 
       {colorType ? (
-        <>
+        <S.ColorTypeWrapper>
           <S.ColorTypeTitle color={color[selectedIndex].textColor}>
-            <FormattedMessage id={`${colorType}.name`} />
+            {t(`${colorType}.name`)}
           </S.ColorTypeTitle>
-          {/* <S.TagWrapper>
-            {resultColorData[colorType].tags.map(
-              ({ keyword, backgroundColor, textColor }) => (
-                <S.Tag
-                  key={keyword}
-                  backgroundColor={backgroundColor}
-                  textColor={textColor}
-                >
-                  {`#${keyword}`}
-                </S.Tag>
-              )
-            )}
-          </S.TagWrapper> */}
+
           <Tag colorType={colorType} tags={resultColorData[colorType].tags} />
           <S.PaletteGrid>
             {resultColorData[colorType].gridColors.map(
@@ -113,14 +100,20 @@ const AllTypesView = ({ intl }: WrappedComponentProps) => {
               )
             )}
           </S.PaletteGrid>
-        </>
+        </S.ColorTypeWrapper>
       ) : (
-        <S.Description>
-          <FormattedMessage id="clickType" />
-        </S.Description>
+        <S.Description>{t('clickType')}</S.Description>
       )}
     </S.Wrapper>
   );
 };
 
-export default injectIntl(AllTypesView);
+export const getServerSideProps: GetServerSideProps = async ({ locale }) => {
+  return {
+    props: {
+      ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    },
+  };
+};
+
+export default AllTypesView;

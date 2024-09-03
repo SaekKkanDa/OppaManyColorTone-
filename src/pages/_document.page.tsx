@@ -1,4 +1,4 @@
-import Script from 'next/script';
+/* eslint-disable @next/next/no-document-import-in-page */
 import Document, {
   Html,
   Head,
@@ -84,13 +84,6 @@ export default class MyDocument extends Document {
             content="4be41e9a6714ed8ff418f6bfaa1eb7fcb635871c"
           />
 
-          {/* Google Adsense */}
-          <Script
-            async
-            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9551977219354865"
-            crossOrigin="anonymous"
-          />
-
           {/* favicon: icons created by Freepik - Flaticon */}
           <link
             rel="apple-touch-icon"
@@ -115,6 +108,10 @@ export default class MyDocument extends Document {
         <body>
           <Main />
           <NextScript />
+          <script
+            async
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9551977219354865"
+          />
         </body>
       </Html>
     );
