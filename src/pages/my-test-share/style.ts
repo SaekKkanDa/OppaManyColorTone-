@@ -39,6 +39,7 @@ export const TestUrlWrapper = styled.div`
 export const TestUrlHeader = styled.div`
   ${flexCustom('row', 'center', 'space-between')}
   font-size: ${({ theme }) => theme.font.size.lg};
+  color: ${({ theme }) => theme.gray[900]};
 `;
 
 export const TestUrl = styled.div`
@@ -47,6 +48,8 @@ export const TestUrl = styled.div`
   word-break: break-all;
 `;
 
-export const CopyUrlButton = styled.button``;
+export const CopyUrlButton = styled.button`
+  color: ${({ theme }) => theme.gray[900]};
+`;
 
 export const PrimaryButton = Button;
