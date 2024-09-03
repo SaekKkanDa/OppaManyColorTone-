@@ -1,4 +1,4 @@
 export const cLocales = {
-  ko: 'ko-KR',
+  ko: 'ko',
   en: 'en',
 } as const;
