@@ -153,7 +153,7 @@ yarn run dev
 - [컬러칩 선택 인터렉션 추가🔗](https://github.com/SaekKkanDa/OppaManyColorTone/issues/264)  
   사용자의 중간 이탈율을 줄이기 위하여, 컬러 선택 과정에 애니메이션을 추가하여 서비스의 몰입도를 향상
 
-### 수야
+### [수야](https://github.com/soojjung)
 
 - 퍼스널컬러 관련 아이디어 제공  
   퍼스널컬러 12타입으로 확장, 타입 별 컬러 초이스 및 설명 텍스트 작업
@@ -163,7 +163,7 @@ yarn run dev
 
 - [SEO 메타 태그🔗](https://github.com/SaekKkanDa/OppaManyColorTone/pull/247)
 
-### 준
+### [준](https://github.com/hyeongjun3)
 
 - [SVG를 이용한 인터렉션 개발🔗](https://github.com/SaekKkanDa/OppaManyColorTone/issues/167)  
   주로 사용하는 lottie 혹은 애니메이션 라이브러리가 아닌 svg를 직접 제어하는 인터렉션 개발
